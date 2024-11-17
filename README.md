@@ -1,6 +1,6 @@
-Aqui está o conteúdo formatado para o arquivo `README.md`:
 
-```markdown
+
+
 # Next.js Loja
 
 Um sistema de loja desenvolvido com **Next.js** e **Prisma**, utilizando **MongoDB** como banco de dados. Este projeto exemplifica como criar um sistema básico com operações de CRUD (Create, Read, Update e Delete) para gerenciar categorias, jogos, ofertas e outros dados relacionados.
