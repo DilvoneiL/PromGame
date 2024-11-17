@@ -1,0 +1,97 @@
+/* Container Principal */
+.topo {
+  width: 100%;
+  background-color: #373737;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; /* Fixa no topo */
+  top: 0;
+  z-index: 10; /* Garante que fique acima de outros elementos */
+}
+
+/* Wrapper para alinhar os elementos */
+.wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Esquerda: Logo */
+.left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* Centro: Nome e Pesquisa */
+.center {
+  flex: 1;
+  text-align: center;
+  color: white;
+}
+
+.searchContainer {
+  margin-top: 5px;
+}
+
+.searchInput {
+  width: 80%;
+  padding: 5px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  background-color: #2c2c2c;
+  color: #fff;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: #aaa;
+}
+
+/* Direita: Menu */
+.right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 4rem;
+}
+
+.mainmenu {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mainmenu li {
+  font-size: 0.9rem;
+  color: white; /* Define a cor do texto como branco */
+  cursor: pointer;
+  transition: color 0.3s ease; /* Animação para mudança de cor no hover */
+}
+
+.mainmenu li a {
+  text-decoration: none; /* Remove sublinhado dos links */
+  color: white; /* Define a cor do link como branco */
+}
+
+.mainmenu li a:hover {
+  color: #00aaff; /* Altere a cor no hover, se necessário */
+}
+
+.home {
+  display: flex; /* Configura um layout flexível */
+  flex-direction: column; /* Garante que os itens sejam empilhados verticalmente */
+  align-items: center; /* Centraliza os itens no eixo horizontal */
+  justify-content: center; /* Centraliza os itens no eixo vertical */
+  width: 100%; /* Ocupa toda a largura */
+  height: 100vh; /* Ocupa toda a altura da viewport */
+  margin: 0; /* Remove margens externas */
+  padding: 0; /* Remove paddings externos */
+  background-color: #272727; /* Cor de fundo */
+}

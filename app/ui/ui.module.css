@@ -1,0 +1,124 @@
+.login {  
+  font-size: 0.9rem;
+  color: white; /* Define a cor do texto como branco */
+  cursor: pointer;
+  transition: color 0.3s ease; /* Animação para mudança de cor no hover */
+}
+.login:hover{
+  color: #00aaff;
+}
+
+
+.formularioDiv {
+  background-color: rgb(var(--loja-light-grey-rgb));
+  border: 1px solid rgb(var(--loja-light-blue-rgb));
+}
+
+.formularioForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 1rem 1rem 0rem;
+  text-align: center;
+  min-height: 150px;
+}
+
+.formularioForm label {
+  display: block;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.formularioForm label span {
+  display: inline-block;
+  width: 10%;
+}
+
+.formularioForm label input {
+  display: inline-block;
+  width: 40%;
+}
+
+
+.formularioForm p {
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.formularioPainel {
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 15px;
+  width: 100%;
+}
+
+.formularioPainel button {
+  font-size: 60%;
+  font-weight: bold;
+  height: 25px;
+  width: 120px;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+.painelCRUD {
+  background-color: rgb(var(--loja-blue-rgb));
+  color: rgb(var(--loja-light-grey-rgb));
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+}
+
+.painelCRUD button {
+  font-size: 60%;
+  font-weight: bold;
+  height: 25px;
+  width: 120px;
+  margin: 0 1rem;
+  cursor: pointer;
+}
+
+.tabeladiv {
+  overflow: scroll;
+  max-height: 150px;
+}
+
+.tabela {
+  border: 1px solid rgb(var(--loja-light-blue-rgb));
+  border-collapse: collapse;
+  padding: 2px;
+  text-align: left;
+  width: 100%;
+}
+
+.tabela tr:nth-child(even) {
+  background-color: rgb(var(--background-start-rgb));
+}
+
+.tabela tr:hover {
+  background-color: rgb(var(--loja-light-blue-rgb));
+}
+
+.tabela th,
+.tabela td {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.tabela th {
+  background-color: rgb(var(--loja-blue-rgb));
+  color: rgb(var(--loja-light-grey-rgb));
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+}

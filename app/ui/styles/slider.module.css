@@ -1,0 +1,101 @@
+
+.container {
+    width: 100%;
+    display: flex;
+    position: relative;
+    overflow: hidden; /* Esconde os elementos fora da área visível */
+    border: 1px solid #ccc0c0; /* Adiciona uma borda preta de 5px */
+    border-radius: 10px; /* Deixa as bordas levemente arredondadas */    
+    align-items: center; /* Centraliza verticalmente os elementos */
+    justify-content: center; /* Centraliza horizontalmente os elementos */
+  }
+  
+  .arrow {
+    width: 50px;
+    height: 50px;
+    background-color: #fff7f7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    cursor: pointer;
+    opacity: 0.5;
+    z-index: 2;
+  }
+  
+  .arrowLeft {
+    left: 20px;
+  }
+  
+  .arrowRight {
+    right: 20px;
+  }
+  
+  .wrapper {
+    height: 100%;
+    display: flex;
+    transition: all 1.5s ease;
+    height: 100%; /* Garante que a altura seja consistente */
+  }
+  
+  .slide {
+    width: 100%; /* O slide ocupa toda a largura do contêiner */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza os elementos no slide */
+    flex-shrink: 0; /* Garante que cada slide permaneça do mesmo tamanho */
+    justify-content: space-between; /* Espaça a imagem e o texto dentro do slide */
+  }
+  
+  
+  .imgContainer {
+    width: 100%; 
+    height: 100%; 
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza a imagem no contêiner */
+    flex: 1; /* Ocupa metade do espaço disponível */
+ 
+  }
+  
+  .image {
+    width: 100%; /* Faz a imagem ocupar toda a largura do contêiner */
+    height: 100%; /* Faz a imagem ocupar toda a altura do contêiner */
+    object-fit: cover; /* Garante que a imagem cubra todo o espaço sem deixar espaços */
+    border: 1px solid #000; /* Adiciona uma borda preta de 5px */
+    border-radius: 10px; /* Deixa as bordas levemente arredondadas */    
+  }
+  
+  
+  .infoContainer {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Organiza os elementos verticalmente */
+    align-items: center; /* Alinha os itens à esquerda */
+    justify-content: center; /* Centraliza verticalmente os itens */
+  }
+  
+  .title {
+    font-size: 2rem; /* Tamanho do título */
+    margin-bottom: 10px;
+    color: white;
+  }
+  
+  .desc {
+    font-size: 1rem; /* Tamanho da descrição */
+    margin-bottom: 20px;
+    color: white;
+  }
+  
+  .button {
+    padding: 10px;
+    font-size: 20px;
+    background-color: wheat;
+    cursor: pointer;
+  }
+  

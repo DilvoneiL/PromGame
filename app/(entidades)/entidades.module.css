@@ -1,0 +1,63 @@
+.entidade {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: right;
+  font-family: var(--font-mono);
+  color: rgb(var(--foreground-rgb));
+}
+
+.entidade h1 {
+  font-size: 2rem;
+  margin: 0.5rem 0;
+}
+
+.formularioDiv {
+  background-color: rgb(var(--loja-light-grey-rgb));
+  border: 1px solid rgb(var(--loja-light-blue-rgb));
+}
+
+.formularioForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 1rem 1rem 0rem;
+  text-align: center;
+}
+
+.formularioForm label {
+  display: block;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.formularioForm label span {
+  display: inline-block;
+  width: 5%;
+}
+
+.formularioForm label input {
+  display: inline-block;
+  width: 50%;
+}
+
+.formularioBotoes {
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 5vh;
+}
+
+.formularioBotoes input {
+  font-size: 60%;
+  font-weight: bold;
+  height: 70%;
+  width: 10%;
+  margin: 0 1rem;
+  cursor: pointer;
+}

@@ -1,0 +1,147 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Modelo Cliente
+model Cliente {
+  id     String  @id @default(cuid()) @map("_id")
+  nome   String
+  email  String  @unique
+  senha  String?
+  vendas Venda[] @relation("ClienteVenda") // Relacionamento inverso
+}
+
+// Modelo Produto
+model Produto {
+  id     String      @id @default(cuid()) @map("_id")
+  nome   String
+  valor  Float
+  vendas ItemVenda[]
+}
+
+// Modelo Venda
+model Venda {
+  id        String      @id @default(cuid()) @map("_id")
+  dthr      DateTime    @default(now())
+  cliente   Cliente     @relation("ClienteVenda", fields: [clienteId], references: [id])
+  clienteId String
+  ItemVenda ItemVenda[]
+}
+
+// Modelo ItemVenda
+model ItemVenda {
+  id        String  @id @default(cuid()) @map("_id")
+  venda     Venda   @relation(fields: [vendaId], references: [id])
+  vendaId   String
+  produto   Produto @relation(fields: [produtoId], references: [id])
+  produtoId String
+  valor     Float
+
+  @@unique([vendaId, produtoId])
+}
+
+// Tabelas do Next Auth
+model User {
+  id            String          @id @default(cuid()) @map("_id")
+  name          String?
+  email         String?         @unique
+  password      String?
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  Authenticator Authenticator[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid()) @map("_id")
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid()) @map("_id")
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  id         String   @id @default(cuid()) @map("_id")
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+
+model Categoria {
+  id        String      @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
+  nome      String
+  descricao String
+  jogos     JogosCategorias[] // Relacionamento com Jogo
+}
+
+model Jogo {
+  id          String           @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
+  nome        String
+  ano         DateTime
+  publisher   String
+  descricao   String
+  categorias  JogosCategorias[] // Relacionamento com Categoria
+}
+
+model JogosCategorias {
+  id           String       @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
+  jogoId       String       @db.ObjectId // Campo de referência ao ID do jogo
+  categoriaId  String       @db.ObjectId // Campo de referência ao ID da categoria
+  jogo         Jogo         @relation(fields: [jogoId], references: [id])
+  categoria    Categoria    @relation(fields: [categoriaId], references: [id])
+}
+
+
+
+model Authenticator {
+  id                   String  @id @default(cuid()) @map("_id")
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, credentialID])
+}
