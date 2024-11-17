@@ -81,6 +81,10 @@ Certifique-se de ter as seguintes ferramentas instaladas:
    ```bash
    npx prisma generate
    ```
+    **Abrir Prisma Studio**:
+      ```bash
+   npx prisma studio
+   ```
 
 2. **Sincronizar modelos com o banco de dados (se necessário)**:
 
