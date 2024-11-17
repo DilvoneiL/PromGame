@@ -6,7 +6,7 @@ export default class Cliente extends Entidade {
   senha: string;
 
   constructor(id: string = "", nome: string = "", email: string = "", senha: string = "") {
-    super(id);
+    super();
     this.nome = nome;
     this.email = email;
     this.senha = senha;

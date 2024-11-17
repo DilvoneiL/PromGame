@@ -31,7 +31,6 @@ export async function inserirCliente(cliente: Cliente): Promise<boolean> {
   try {
     const novoCliente = await prisma.cliente.create({
       data: {
-        id: cliente.id, // Aqui o `id` deve ser String
         nome: cliente.nome,
         email: cliente.email,
         senha: cliente.senha,
