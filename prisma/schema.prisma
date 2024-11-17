@@ -123,9 +123,9 @@ model Jogo {
 model JogosCategorias {
   id           String       @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
   jogoId       String       @db.ObjectId // Campo de referência ao ID do jogo
-  categoriaId  String       @db.ObjectId // Campo de referência ao ID da categoria
+  categoriaId  String?      @db.ObjectId // Campo de referência ao ID da categoria
   jogo         Jogo         @relation(fields: [jogoId], references: [id])
-  categoria    Categoria    @relation(fields: [categoriaId], references: [id])
+  categoria    Categoria?    @relation(fields: [categoriaId], references: [id])
 }
 
 
