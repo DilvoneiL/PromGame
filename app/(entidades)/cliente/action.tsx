@@ -84,7 +84,12 @@ export async function editarCliente(prevState: any, formData: FormData) {
 }
 
 
-export async function removerCliente(id: number) {
+export async function removerCliente(id: string) {
+  // Verifica se o ID é válido para MongoDB
+  if (!id) { // Valide se o ID é válido (exemplo para IDs numéricos)
+    alert(`ID inválido: ${id}`);
+    return;
+  }
 
   const res = await post(
     "http://localhost:3000/api/cliente/rmv",
@@ -93,8 +98,7 @@ export async function removerCliente(id: number) {
 
   if (res.mensagem) {
     return { mensagem: `O cliente com ID: ${id} foi removido.` };
-  }
-  else {
+  } else {
     return { mensagem: `Não foi possível remover o cliente com ID: ${id}` };
   }
 }

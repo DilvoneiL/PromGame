@@ -27,15 +27,57 @@ export async function obterCliente(id: string): Promise<Cliente> {
   return cliente ?? { id: 0, nome: "", email: "" };
 }
 
+// Função para obter o próximo valor da sequência para IDs incrementais
+async function getNextSequence(name: string): Promise<number> {
+  try {
+    const result = await prisma.$runCommandRaw({
+      update: "counters", // Nome da coleção de contadores
+      updates: [
+        {
+          q: { _id: name },
+          u: { $inc: { sequence_value: 1 } },
+          upsert: true, // Cria o documento se ele não existir
+        },
+      ],
+    });
+
+    if (result.ok === 1 && result.nModified > 0) {
+      // Busca o valor atualizado do contador
+      const counter = await prisma.$runCommandRaw({
+        find: "counters",
+        filter: { _id: name },
+      });
+
+      if (counter.cursor?.firstBatch?.length > 0) {
+        return counter.cursor.firstBatch[0].sequence_value;
+      } else {
+        throw new Error(`Erro ao buscar o contador atualizado para ${name}`);
+      }
+    } else {
+      throw new Error(`Erro ao incrementar o contador para ${name}`);
+    }
+  } catch (error) {
+    console.error("Erro ao obter a sequência para IDs incrementais:", error);
+    throw error;
+  }
+}
+
+// Função para inserir um cliente com ID incremental
 export async function inserirCliente(cliente: Cliente): Promise<boolean> {
   try {
+    // Obtém o próximo valor da sequência
+    const nextId = await getNextSequence("clienteId");
+
+    // Insere o cliente no banco de dados
     const novoCliente = await prisma.cliente.create({
       data: {
+        id: nextId.toString(), // Converte o ID para string
         nome: cliente.nome,
         email: cliente.email,
         senha: cliente.senha,
       },
     });
+
     console.log("Cliente inserido com sucesso:", novoCliente);
     return true;
   } catch (error) {
@@ -43,6 +85,7 @@ export async function inserirCliente(cliente: Cliente): Promise<boolean> {
     throw new Error("Erro ao inserir cliente no banco.");
   }
 }
+
 
 export async function editarCliente(cliente: Cliente): Promise<boolean> {
 
@@ -61,12 +104,15 @@ export async function editarCliente(cliente: Cliente): Promise<boolean> {
 
 
 export async function removerCliente(id: string): Promise<boolean> {
-
-  const clienteRemovido = await prisma.cliente.delete({
-    where: {
-      id: id
-    }
-  });
-
-  return clienteRemovido.id === id;
+  try {
+    const resultado = await prisma.cliente.delete({
+      where: { id },
+    });
+    console.log("Registro excluído com sucesso:", resultado);
+    return true;
+  } catch (error) {
+    console.error("Erro ao remover cliente no banco de dados:", error);
+    throw new Error("Erro ao remover cliente.");
+  }
 }
+

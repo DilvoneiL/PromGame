@@ -13,37 +13,32 @@ model Cliente {
   nome   String
   email  String  @unique
   senha  String?
-  vendas Venda[] @relation("ClienteVenda") // Relacionamento inverso
 }
 
-// Modelo Produto
-model Produto {
-  id     String      @id @default(cuid()) @map("_id")
-  nome   String
-  valor  Float
-  vendas ItemVenda[]
+model Categoria {
+  id        String      @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
+  nome      String
+  descricao String
+  jogos     JogosCategorias[] // Relacionamento com Jogo
 }
 
-// Modelo Venda
-model Venda {
-  id        String      @id @default(cuid()) @map("_id")
-  dthr      DateTime    @default(now())
-  cliente   Cliente     @relation("ClienteVenda", fields: [clienteId], references: [id])
-  clienteId String
-  ItemVenda ItemVenda[]
+model Jogo {
+  id          String           @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
+  nome        String
+  ano         DateTime
+  publisher   String
+  descricao   String
+  categorias  JogosCategorias[] // Relacionamento com Categoria
 }
 
-// Modelo ItemVenda
-model ItemVenda {
-  id        String  @id @default(cuid()) @map("_id")
-  venda     Venda   @relation(fields: [vendaId], references: [id])
-  vendaId   String
-  produto   Produto @relation(fields: [produtoId], references: [id])
-  produtoId String
-  valor     Float
-
-  @@unique([vendaId, produtoId])
+model JogosCategorias {
+  id           String       @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
+  jogoId       String       @db.ObjectId // Campo de referência ao ID do jogo
+  categoriaId  String?      @db.ObjectId // Campo de referência ao ID da categoria
+  jogo         Jogo         @relation(fields: [jogoId], references: [id])
+  categoria    Categoria?    @relation(fields: [categoriaId], references: [id])
 }
+
 
 // Tabelas do Next Auth
 model User {
@@ -102,33 +97,6 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
-
-
-model Categoria {
-  id        String      @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
-  nome      String
-  descricao String
-  jogos     JogosCategorias[] // Relacionamento com Jogo
-}
-
-model Jogo {
-  id          String           @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
-  nome        String
-  ano         DateTime
-  publisher   String
-  descricao   String
-  categorias  JogosCategorias[] // Relacionamento com Categoria
-}
-
-model JogosCategorias {
-  id           String       @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
-  jogoId       String       @db.ObjectId // Campo de referência ao ID do jogo
-  categoriaId  String?      @db.ObjectId // Campo de referência ao ID da categoria
-  jogo         Jogo         @relation(fields: [jogoId], references: [id])
-  categoria    Categoria?    @relation(fields: [categoriaId], references: [id])
-}
-
-
 
 model Authenticator {
   id                   String  @id @default(cuid()) @map("_id")
