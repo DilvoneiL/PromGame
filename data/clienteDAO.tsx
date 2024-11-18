@@ -104,15 +104,12 @@ export async function editarCliente(cliente: Cliente): Promise<boolean> {
 
 
 export async function removerCliente(id: string): Promise<boolean> {
-  try {
-    const resultado = await prisma.cliente.delete({
-      where: { id },
-    });
-    console.log("Registro excluído com sucesso:", resultado);
-    return true;
-  } catch (error) {
-    console.error("Erro ao remover cliente no banco de dados:", error);
-    throw new Error("Erro ao remover cliente.");
-  }
-}
 
+  const clienteRemovido = await prisma.cliente.delete({
+    where: {
+      id: id
+    }
+  });
+
+  return clienteRemovido.id === id;
+}
