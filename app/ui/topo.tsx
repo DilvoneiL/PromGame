@@ -45,7 +45,7 @@ export default function Topo() {
               <Link href="/cliente">Clientes</Link>
             </li>
             <li>
-              <Link href="/produto">Produtos</Link>
+              <Link href="/categoria">Categorias</Link>
             </li>
             <li>
               <Link href="/venda">Vendas</Link>

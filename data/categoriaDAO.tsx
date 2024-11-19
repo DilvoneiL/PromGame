@@ -4,8 +4,9 @@ import Categoria from "@/app/(entidades)/categoria/categoria";
 // Obter todas as categorias
 export async function obterCategorias(): Promise<Categoria[]> {
   const categorias = await prisma.categoria.findMany();
-  return categorias.map((cat) => new Categoria(cat.id, cat.nome, cat.descricao));
+  return categorias.map((cat) => new Categoria(cat.nome, cat.descricao, cat.id));
 }
+
 
 // Obter categoria por nome
 export async function obterCategoriaPorNome(nome: string): Promise<Categoria | null> {
@@ -34,7 +35,6 @@ export async function inserirCategoria(categoria: Categoria): Promise<boolean> {
   try {
     const novaCategoria = await prisma.categoria.create({
       data: {
-        id: categoria.id,
         nome: categoria.nome,
         descricao: categoria.descricao,
       },
