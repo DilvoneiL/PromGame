@@ -22,7 +22,7 @@ export default function Clientes() {
   if (isLoading) {
     return (
       <div className={styles.entidade}>
-        <h1>Clientes</h1>
+        <h1>Site</h1>
         <h1>Carregando...</h1>
       </div>
     );
@@ -31,7 +31,7 @@ export default function Clientes() {
   if (error) {
     return (
       <div className={styles.entidade}>
-        <h1>Clientes</h1>
+        <h1>Site</h1>
         <h1>Error ao carregar os clientes.</h1>
       </div>
     );
@@ -46,7 +46,7 @@ export default function Clientes() {
 
   return (
     <div className={styles.entidade}>
-      <h1>Clientes</h1>
+      <h1>Sites</h1>
       <Tabela cabecalho={cabecalho} linhas={linhas} />
       <PainelCRUD
         adicionar={() => router.push("/cliente/forms/adc")}

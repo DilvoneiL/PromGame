@@ -50,7 +50,7 @@ export default function Topo() {
             <li>
               <Link href="/venda">Vendas</Link>
             </li>
-            <li>
+            {/* <li>
               <Image
                 src="/wishlist.png"
                 alt="wishlist"
@@ -58,7 +58,7 @@ export default function Topo() {
                 height={20}
                 style={{ marginLeft: "15px", cursor: "pointer" }}
               />
-            </li>
+            </li> */}
             <Login />
           </ul>
         </div>
