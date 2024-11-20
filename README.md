@@ -81,6 +81,9 @@ Certifique-se de ter as seguintes ferramentas instaladas:
    ```bash
    npx prisma generate
    ```
+   ```bash
+   npx prisma validate
+   ```
     **Abrir Prisma Studio**:
       ```bash
    npx prisma studio
