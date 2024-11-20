@@ -39,12 +39,12 @@ export default function Clientes() {
   return (
     <div className={styles.entidade}>
       <h1>Sites</h1>
-      <Tabela cabecalho={cabecalho} linhas={linhas} />
       <PainelCRUD
         adicionar={() => router.push("/cliente/forms/adc")}
         editar={() => router.push("/cliente/forms/edt/" + obterSelecionadas(true)[0][0])}
         remover={cliqueRemover}
       />
+      <Tabela cabecalho={cabecalho} linhas={linhas} />
     </div>
   );
 }
