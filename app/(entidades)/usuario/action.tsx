@@ -35,18 +35,37 @@ export async function efetuarLogout() {
 }
 
 export async function adicionarUsuario(prevState: any, formData: FormData) {
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const role = formData.get("role") as string || "NORMAL"; // Pega o valor do campo ou usa NORMAL como padrão
 
-  const user = await prisma.user.create({
-    data: {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    },
-  });
-
-  if (!user) {
-    return { mensagem: "Não foi possível cadastrar o usuário." };
+  if (!name || !email || !password || !role) {
+    return { mensagem: "Todos os campos são obrigatórios." };
   }
 
-  redirect("/usuario/forms/lgn");
+  if (role !== "ADMIN" && role !== "NORMAL") {
+    return { mensagem: "Valor de role inválido. Use ADMIN ou NORMAL." };
+  }
+
+  try {
+    // Criação do usuário com role
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password,
+        role, // Adiciona o campo role
+      },
+    });
+
+    if (!user) {
+      return { mensagem: "Não foi possível cadastrar o usuário." };
+    }
+
+  return { mensagem: "Usuário cadastrado com sucesso.", redirectUrl: "/usuario/forms/lgn" };
+  } catch (error) {
+    console.error("Erro ao cadastrar usuário:", error);
+    return { mensagem: "Erro ao cadastrar o usuário. Tente novamente." };
+  }
 }
