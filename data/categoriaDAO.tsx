@@ -16,7 +16,7 @@ export async function obterCategoriaPorNome(nome: string): Promise<Categoria | n
     },
   });
 
-  return categoria ? new Categoria(categoria.id, categoria.nome, categoria.descricao) : null;
+  return categoria ? new Categoria(categoria.nome, categoria.descricao, categoria.id) : null;
 }
 
 // Obter categoria por ID
@@ -27,7 +27,7 @@ export async function obterCategoria(id: string): Promise<Categoria | null> {
     },
   });
 
-  return categoria ? new Categoria(categoria.id, categoria.nome, categoria.descricao) : null;
+  return categoria ? new Categoria(categoria.nome, categoria.descricao, categoria.id) : null;
 }
 
 // Inserir nova categoria
@@ -50,6 +50,7 @@ export async function inserirCategoria(categoria: Categoria): Promise<boolean> {
 // Editar categoria existente
 export async function editarCategoria(categoria: Categoria): Promise<boolean> {
   try {
+    console.log("Categoria recebida para edição:", categoria);
     const categoriaEditada = await prisma.categoria.update({
       where: {
         id: categoria.id,

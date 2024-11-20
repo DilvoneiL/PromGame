@@ -86,7 +86,7 @@ export async function editarCategoriaAction(prevState: any, formData: FormData) 
 
   const categoria = parse.data;
 
-  const categoriaEditada = new Categoria(categoria.id, categoria.nome, categoria.descricao);
+  const categoriaEditada = new Categoria(categoria.nome, categoria.descricao, categoria.id);
 
   const resultado = await editarCategoria(categoriaEditada);
 

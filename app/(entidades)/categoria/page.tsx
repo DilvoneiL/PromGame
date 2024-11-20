@@ -46,11 +46,11 @@ export default function Categorias() {
 
   return (
     <div className={styles.entidade}>
-      <h1>Categorias</h1>
+      <h1>Categorias</h1>  
       <Tabela cabecalho={cabecalho} linhas={linhas} />
       <PainelCRUD
         adicionar={() => router.push("/categoria/forms/adc")}
-        editar={() =>
+        editar={() =>    
           router.push("/categoria/forms/edt/" + obterSelecionadas(true)[0][0])
         }
         remover={cliqueRemover}
