@@ -20,7 +20,7 @@ export default function Categorias() {
   if (isLoading) {
     return (
       <div className={styles.entidade}>
-        <h1>Categorias</h1>
+
         <h1>Carregando...</h1>
       </div>
     );
@@ -36,9 +36,7 @@ export default function Categorias() {
 
 
   return (
-    <div className={styles.entidade}>
-      <h1>Categorias</h1>  
-      <Tabela cabecalho={cabecalho} linhas={linhas} />
+    <div className={styles.entidade}>  
       <PainelCRUD
         adicionar={() => router.push("/categoria/forms/adc")}
         editar={() =>    
@@ -46,6 +44,7 @@ export default function Categorias() {
         }
         remover={cliqueRemover}
       />
+      <Tabela cabecalho={cabecalho} linhas={linhas} />
     </div>
   );
 }
