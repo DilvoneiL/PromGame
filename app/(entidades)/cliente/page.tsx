@@ -28,14 +28,6 @@ export default function Clientes() {
     );
   }
 
-  if (error) {
-    return (
-      <div className={styles.entidade}>
-        <h1>Site</h1>
-        <h1>Error ao carregar os clientes.</h1>
-      </div>
-    );
-  }
 
   const clientes = data && data.length > 0 ?
     data.sort((a, b) => a.id - b.id) :
