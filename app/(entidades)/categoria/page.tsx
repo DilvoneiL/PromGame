@@ -26,23 +26,22 @@ export default function Categorias() {
     );
   }
 
-  if (error) {
+  if (error || !data || !Array.isArray(data)) {
     return (
       <div className={styles.entidade}>
         <h1>Categorias</h1>
-        <h1>Erro ao carregar as categorias.</h1>
+        <h1>TESTE.</h1>
       </div>
     );
   }
 
-  const categorias = data && data.length > 0
-    ? data.sort((a, b) => a.id.localeCompare(b.id))
-    : [new Categoria()];
+  const categorias = data.length > 0
+    ? data.filter((c) => c && c.id && c.nome && c.descricao)
+           .sort((a, b) => a.id.localeCompare(b.id))
+    : [];
 
   const cabecalho = ["Id", "Nome", "Descrição"];
   const linhas = categorias.map((c) => [c.id.toString(), c.nome, c.descricao]);
-
-
 
   return (
     <div className={styles.entidade}>
