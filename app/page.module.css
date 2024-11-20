@@ -103,7 +103,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: sticky; /* Fixa no topo */
-  top: 0;
-  z-index: 10; /* Garante que fique acima de outros elementos */
+  position: relative; /* Mantém o rodapé no fluxo do layout */
+  bottom: 0;
 }
