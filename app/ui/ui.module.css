@@ -1,8 +1,8 @@
 .login {  
   font-size: 0.9rem;
-  color: white; /* Define a cor do texto como branco */
+  color: white;
   cursor: pointer;
-  transition: color 0.3s ease; /* Animação para mudança de cor no hover */
+  transition: color 0.3s ease;
 }
 .login:hover{
   color: #00aaff;

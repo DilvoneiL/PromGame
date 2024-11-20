@@ -11,7 +11,7 @@ export default function FormAdcCategoria() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget); // Captura os dados do formulário
+    const formData = new FormData(e.currentTarget);
 
     try {
       const response = await adicionarCategoria(null, formData);
