@@ -26,15 +26,6 @@ export default function Categorias() {
     );
   }
 
-  if (error) {
-    return (
-      <div className={styles.entidade}>
-        <h1>Categorias</h1>
-        <h1>Erro ao carregar as categorias.</h1>
-      </div>
-    );
-  }
-
   const categorias = data && data.length > 0
     ? data.sort((a, b) => a.id.localeCompare(b.id))
     : [new Categoria()];
