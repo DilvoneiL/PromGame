@@ -48,6 +48,7 @@ model User {
   password      String?
   emailVerified DateTime?
   image         String?
+  role          String          @default("NORMAL") // role agora é uma string
   accounts      Account[]
   sessions      Session[]
   Authenticator Authenticator[]
