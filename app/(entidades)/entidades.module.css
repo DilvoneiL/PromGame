@@ -3,15 +3,16 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: right;
+  align-items: center;
   font-family: var(--font-mono);
-  color: rgb(var(--foreground-rgb));
-  background-color: #272727;
+  background-color: #1E1E1E ;
 }
 
 .entidade h1 {
   font-size: 2rem;
   margin: 0.5rem 0;
+  color: white;
+  margin-bottom: 20px;
 }
 
 .formularioDiv {
