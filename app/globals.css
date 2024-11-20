@@ -9,6 +9,10 @@ html, body {
   
 }
 
+/* Conteúdo principal da página */
+.content {
+  flex: 1; /* Faz com que o conteúdo principal ocupe o espaço disponível */
+}
 
 /* Garante que o navbar fique no topo */
 .topo {
