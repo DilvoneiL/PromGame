@@ -1,46 +1,50 @@
-.login {  
-  font-size: 0.9rem;
-  color: white; /* Define a cor do texto como branco */
-  cursor: pointer;
-  transition: color 0.3s ease; /* Animação para mudança de cor no hover */
-}
-.login:hover{
-  color: #00aaff;
-}
-
-
 .formularioDiv {
-  background-color: rgb(var(--loja-light-grey-rgb));
-  border: 1px solid rgb(var(--loja-light-blue-rgb));
+  display: flex;
+  flex-direction: column;
+  background-color: #2A2A2A;
+  border: 1px solid #555;
+  border-radius: 10px;
+  align-items: center;
+  align-self: center;
 }
 
 .formularioForm {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  margin-top: 1rem;
-  padding: 1rem 1rem 0rem;
+  padding: 2rem;
   text-align: center;
   min-height: 150px;
+  border-radius: 10px;
 }
 
 .formularioForm label {
   display: block;
   margin-bottom: 1rem;
   width: 100%;
-}
-
-.formularioForm label span {
-  display: inline-block;
-  width: 10%;
+  border-radius: 8px; /* Bordas arredondadas */
+  border: 1px solid #555; /* Bordas suaves */
+  background-color: #333; /* Fundo escuro */
 }
 
 .formularioForm label input {
   display: inline-block;
-  width: 40%;
+  width: 80%;
+  padding: 10px;
+  margin-top: 0.5rem;
+  background-color: #333; /* Fundo escuro */
+  color: white; /* Texto branco */
+  font-size: 1rem; /* Fonte maior */
+  border: none; /* Remove as bordas */
+  outline: none; /* Remove o contorno ao focar */
+  border-radius: 0; /* Remove bordas arredondadas, se houver */
 }
 
+
+.formularioForm label input::placeholder {
+  color: #bbbbbb6b; /* Placeholder mais claro */
+}
 
 .formularioForm p {
   font-size: 1.5rem;
@@ -48,46 +52,48 @@
   margin: 1rem 0;
 }
 
-.formularioPainel {
-  font-size: 1.5rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: 15px;
-  width: 100%;
-}
-
-.formularioPainel button {
-  font-size: 60%;
+/* Botões */
+.formularioPainel button,
+.painelCRUD button {
+  font-size: 1rem;
   font-weight: bold;
-  height: 25px;
-  width: 120px;
-  margin: 1rem;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: flex;
+  background-color: white;
+  color: #1E1E1E;
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.formularioPainel button:hover,
+.painelCRUD button:hover {
+  background-color: #00aaff;
+  color: white;
+}
+
+/* Login */
+.login {  
+  font-size: 0.9rem;
+  color: white; /* Define a cor do texto como branco */
+  cursor: pointer;
+  transition: color 0.3s ease; /* Animação para mudança de cor no hover */
+}
+
+.login:hover {
+  color: #00aaff;
+}
+
+/* Painel CRUD */
 .painelCRUD {
   margin-top: 20px;
-  font-size: 1.0rem;
+  font-size: 1rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   height: 30px;
 }
-
-.painelCRUD button {
-  font-size: 100%;
-  height: 25px;
-  width: 120px;
-  margin: 0 1rem;
-  cursor: pointer;
-  border-radius: 5px;
-  background-color: #007BFF;
-  color: white;
-}
-
 
 .tabeladiv {
   max-height: 100%;
@@ -98,29 +104,27 @@
   text-align: left;
   width: 100%;
   color: white;
-  background-color: #1E1E1E ;
+  background-color: #1E1E1E;
   margin-top: 20px;
+  border-radius: 10px; /* Bordas arredondadas */
 }
 
-.tabela th{
+.tabela th {
   padding: 0.5rem;
   font-size: 1rem; 
   text-align: center;
- 
+  color: #ccc; /* Cabeçalhos mais claros */
+  font-weight: bold;
+  position: sticky;
+  top: 0;
 }
 
 .tabela td {
   padding: 0.5rem;
   font-size: 1rem;
-  background-color: none;
 }
 
-.tabela th {
-  color: rgb(var(--loja-light-grey-rgb));
-  font-weight: bold;
-  position: sticky;
-  top: 0;
-}
+/* Cartão */
 .card {
   display: flex;
   background-color: #444;
@@ -131,7 +135,6 @@
   margin-bottom: 16px;
   width: 1200px;
 }
-
 
 .card_image img {
   width: 80px;
@@ -146,7 +149,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: none;
 }
 
 .card_image h3 {
