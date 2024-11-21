@@ -4,6 +4,7 @@ import { adicionarCategoria } from "@/app/(entidades)/categoria/action";
 import SubmitButton from "@/app/ui/submitbutton";
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function FormAdcCategoria() {
   const [mensagem, setMensagem] = useState("");
@@ -11,8 +12,7 @@ export default function FormAdcCategoria() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget); // Captura os dados do formulário
-
+    const formData = new FormData(e.currentTarget);
     try {
       const response = await adicionarCategoria(null, formData);
       setMensagem(response?.mensagem || "Categoria adicionada com sucesso!");
@@ -24,15 +24,33 @@ export default function FormAdcCategoria() {
 
   return (
     <div className={styles.formularioDiv}>
-      <h1>Adicionar Categoria</h1>
+      <Image
+              src="/Octagon.png"
+              alt="PromGame"
+              width={60}
+              height={60}
+              style={{ cursor: "pointer" }}
+            />
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
         <label>
-          <span>Nome:</span>
-          <input type="text" id="iptcategoriaNome" name="nome" required />
+        <Image
+          src="/categoria.png"
+          alt="Icon"
+          width={20}
+          height={20}
+          style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
+        />
+          <input placeholder="Nome" type="text" id="iptcategoriaNome" name="nome" required />
         </label>
         <label>
-          <span>Descrição:</span>
-          <input type="text" id="iptcategoriaDescricao" name="descricao" required />
+        <Image
+          src="/categoria.png"
+          alt="Icon"
+          width={20}
+          height={20}
+          style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
+        />
+          <input placeholder="Descrição" type="text" id="iptcategoriaDescricao" name="descricao" required />
         </label>
         <div className={styles.formularioPainel}>
           <SubmitButton rotulo="Confirmar" />
