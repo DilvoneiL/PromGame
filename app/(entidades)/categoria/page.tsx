@@ -35,7 +35,7 @@ export default function Categorias() {
     : [new Categoria()];
 
   const cabecalho = ["Id", "Nome", "Descrição"];
-  const linhas = categorias.map((c) => [c.id.toString(), c.nome, c.descricao]);
+  const linhas = categorias.map((c) => [c.id, c.nome, c.descricao]);
 
   // Atualiza as linhas filtradas com base no input
   const handleSearch = (value: string) => {

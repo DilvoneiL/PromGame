@@ -4,7 +4,7 @@ import SubmitButton from "@/app/ui/submitbutton";
 import { efetuarLogin } from "@/app/(entidades)/usuario/action";
 import { useFormState } from "react-dom";
 import Link from "next/link";
-
+import Image from "next/image";
 
 export default function SignIn() {
 
@@ -16,14 +16,18 @@ export default function SignIn() {
   return (
     <div className={styles.formularioDiv}>
       <form className={styles.formularioForm} action={formAction}>
-        <h1>Login</h1>
+      <Image
+          src="/categoria.png"
+          alt="Icon"
+          width={20}
+          height={20}
+          style={{ margin : "0px 3px 20px"}} // Alinha a imagem ao lado do texto
+        />
         <label>
-          <span>Email:</span>
-          <input name="email" type="email" />
+          <input name="email" type="email" placeholder="E-mail"/>
         </label>
         <label>
-          <span>Senha:</span>
-          <input name="password" type="password" />
+          <input name="password" type="password" placeholder="Senha" />
         </label>
         <div className={styles.formularioPainel}>
           <SubmitButton rotulo="Logar" />
