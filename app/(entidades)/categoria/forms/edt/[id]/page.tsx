@@ -83,7 +83,7 @@ export default function FormEdtCategoria({ params }: { params: { id: string } })
   <div className={styles.formularioPainel}>
     <SubmitButton rotulo="Confirmar" />
     <Link href="/categoria">
-      <button type="button">Cancelar</button>
+      <button type="button">Voltar</button>
     </Link>
   </div>
   {state.mensagem && (

@@ -55,7 +55,7 @@ export default function FormAdcCategoria() {
         <div className={styles.formularioPainel}>
           <SubmitButton rotulo="Confirmar" />
           <Link href="/categoria">
-            <button type="button">Cancelar</button>
+            <button type="button">Voltar</button>
           </Link>
         </div>
         <p aria-live="polite" role="status">{mensagem}</p>
