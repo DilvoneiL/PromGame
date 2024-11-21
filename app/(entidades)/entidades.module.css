@@ -6,6 +6,7 @@
   align-items: center;
   font-family: var(--font-mono);
   background-color: #1E1E1E ;
+  margin-top: 20px;
 }
 
 .entidade h1 {

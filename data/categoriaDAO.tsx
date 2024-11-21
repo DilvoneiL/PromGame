@@ -81,3 +81,23 @@ export async function removerCategoria(id: string): Promise<boolean> {
     throw new Error("Erro ao remover categoria.");
   }
 }
+
+// Buscar categorias por critérios genéricos (nome ou descrição)
+export async function buscarCategoria(criterio: string): Promise<Categoria[]> {
+  try {
+    console.log("Critério recebido para busca:", criterio);
+    const categorias = await prisma.categoria.findMany({
+      where: {
+        OR: [
+          { nome: { contains: criterio, mode: "insensitive" } },
+          { descricao: { contains: criterio, mode: "insensitive" } },
+        ],
+      },
+    });
+    console.log("Resultado da busca:", categorias);
+    return categorias;
+  } catch (error) {
+    console.error("Erro no Prisma ao buscar categorias:", error);
+    throw new Error("Erro ao consultar categorias no banco de dados.");
+  }
+}
