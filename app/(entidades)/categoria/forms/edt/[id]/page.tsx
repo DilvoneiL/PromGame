@@ -4,6 +4,7 @@ import styles from "@/app/ui/ui.module.css";
 import Categoria from "@/app/(entidades)/categoria/categoria";
 import { editarCategoriaAction } from "@/app/(entidades)/categoria/action";
 import SubmitButton from "@/app/ui/submitbutton";
+import Image from "next/image";
 
 import Link from "next/link";
 import useSWR from "swr";
@@ -43,10 +44,15 @@ export default function FormEdtCategoria({ params }: { params: { id: string } })
 
   return (
     <div className={styles.formularioDiv}>
-      <h1>Editar Categoria</h1>
+       <Image
+              src="/Octagon.png"
+              alt="PromGame"
+              width={60}
+              height={60}
+              style={{ margin : "10px 0px 0px"}}
+            />
       <form className={styles.formularioForm} action={formAction}>
     <label>
-      <span>Id:</span>
       <input
         type="text"
         id="iptcategoriaid"
@@ -57,7 +63,6 @@ export default function FormEdtCategoria({ params }: { params: { id: string } })
       />
     </label>
   <label>
-    <span>Nome:</span>
     <input
       type="text"
       id="iptcategorianome"
@@ -67,7 +72,6 @@ export default function FormEdtCategoria({ params }: { params: { id: string } })
     />
   </label>
   <label>
-    <span>Descrição:</span>
     <input
       type="text"
       id="iptcategoriadescricao"

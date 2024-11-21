@@ -15,9 +15,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
           {children}
         </div>
 
-        <div className={styles.rodape}>
-          <p>Copyrigt © PromGame.</p>
-        </div>
 
       </SessionProvider>
     </main>

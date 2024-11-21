@@ -29,7 +29,7 @@ export default function FormAdcCategoria() {
               alt="PromGame"
               width={60}
               height={60}
-              style={{ cursor: "pointer" }}
+              style={{ margin : "10px 0px 0px"}}
             />
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
         <label>
@@ -44,7 +44,7 @@ export default function FormAdcCategoria() {
         </label>
         <label>
         <Image
-          src="/categoria.png"
+          src="/descrição.png"
           alt="Icon"
           width={20}
           height={20}
