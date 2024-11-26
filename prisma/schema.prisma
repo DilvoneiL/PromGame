@@ -15,6 +15,13 @@ model Cliente {
   senha  String?
 }
 
+model Site {
+  id       String @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
+  nome     String
+  endereco String
+}
+
+
 model Categoria {
   id        String      @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
   nome      String
