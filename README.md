@@ -49,14 +49,12 @@ Certifique-se de ter as seguintes ferramentas instaladas:
 
      ```
     ou 
-    ```env
-     DATABASE_URL="mongodb+srv://<USUARIO>:<SENHA>@nomedoseucluster.mongodb.net/meubanco?retryWrites=true&w=majority"
-      ou
-     DATABASE_URL=mongodb+srv://dilvoneialveslacerdajunior:minhasenha@cluster0.5cjnw.mongodb.net/meubanco?retryWrites=true&w=majority
+      ```env
+      DATABASE_URL=mongodb+srv://dilvoneialveslacerdajunior:minhasenha@cluster0.5cjnw.mongodb.net/meubanco?retryWrites=true&w=majority
 
-    NEXTAUTH_SECRET=ttN5dRUvkwhLwn0EO2bMGkq/7lc8yWIrKnBDaCX8rKk=
+      NEXTAUTH_SECRET=ttN5dRUvkwhLwn0EO2bMGkq/7lc8yWIrKnBDaCX8rKk=
 
-     ```
+      ```
 
      - Substitua `<USUARIO>` e `<SENHA>` pelas credenciais do seu MongoDB Atlas.
 
