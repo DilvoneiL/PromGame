@@ -46,7 +46,7 @@ Certifique-se de ter as seguintes ferramentas instaladas:
 
      ```env
      DATABASE_URL="mongodb+srv://<USUARIO>:<SENHA>@nomedoseucluster.mongodb.net/meubanco?retryWrites=true&w=majority"
-
+      ou
      DATABASE_URL=mongodb+srv://dilvoneialveslacerdajunior:minhasenha@cluster0.5cjnw.mongodb.net/meubanco?retryWrites=true&w=majority
 
     NEXTAUTH_SECRET=ttN5dRUvkwhLwn0EO2bMGkq/7lc8yWIrKnBDaCX8rKk=
