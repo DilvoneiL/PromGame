@@ -42,10 +42,15 @@ Certifique-se de ter as seguintes ferramentas instaladas:
    - Crie uma nova coleção chamada `meubanco` no seu cluster.
 
 2. **Configure a conexão com o MongoDB no arquivo `.env`**:
-   - Crie um arquivo `.env` na raiz do projeto e adicione o seguinte:
+   - Crie um arquivo `.env` na raiz do projeto e adicione o seguinte, e muda para as informção do seu banco:
 
      ```env
-     DATABASE_URL="mongodb+srv://<USUARIO>:<SENHA>@cluster0.mongodb.net/meubanco?retryWrites=true&w=majority"
+     DATABASE_URL="mongodb+srv://<USUARIO>:<SENHA>@nomedoseucluster.mongodb.net/meubanco?retryWrites=true&w=majority"
+
+     DATABASE_URL=mongodb+srv://dilvoneialveslacerdajunior:minhasenha@cluster0.5cjnw.mongodb.net/meubanco?retryWrites=true&w=majority
+
+    NEXTAUTH_SECRET=ttN5dRUvkwhLwn0EO2bMGkq/7lc8yWIrKnBDaCX8rKk=
+
      ```
 
      - Substitua `<USUARIO>` e `<SENHA>` pelas credenciais do seu MongoDB Atlas.
