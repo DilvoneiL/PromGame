@@ -43,7 +43,7 @@ Certifique-se de ter as seguintes ferramentas instaladas:
 
 2. **Configure a conexão com o MongoDB no arquivo `.env`**:
    - Crie um arquivo `.env` na raiz do projeto e adicione o seguinte, e muda para as informção do seu banco:
-
+   
      ```env
      DATABASE_URL="mongodb+srv://<USUARIO>:<SENHA>@nomedoseucluster.mongodb.net/meubanco?retryWrites=true&w=majority"
 
@@ -57,7 +57,13 @@ Certifique-se de ter as seguintes ferramentas instaladas:
       ```
 
      - Substitua `<USUARIO>` e `<SENHA>` pelas credenciais do seu MongoDB Atlas.
-
+     - Após isso utilize esses comandos:
+           ```env
+    npm start
+   npx prisma validade
+   npx prisma generate
+   npx prisma db push
+     ```
 3. **Verifique o arquivo Prisma**:
    - Certifique-se de que o `prisma/schema.prisma` está configurado com o provedor `mongodb`.
 
