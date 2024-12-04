@@ -59,11 +59,11 @@ Certifique-se de ter as seguintes ferramentas instaladas:
      - Substitua `<USUARIO>` e `<SENHA>` pelas credenciais do seu MongoDB Atlas.
      - Após isso utilize esses comandos:
            ```env
-    npm start
-   npx prisma validade
-   npx prisma generate
-   npx prisma db push
-     ```
+                npm start
+               npx prisma validade
+               npx prisma generate
+               npx prisma db push
+        ```
 3. **Verifique o arquivo Prisma**:
    - Certifique-se de que o `prisma/schema.prisma` está configurado com o provedor `mongodb`.
 
