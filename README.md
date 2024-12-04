@@ -58,7 +58,7 @@ Certifique-se de ter as seguintes ferramentas instaladas:
 
      - Substitua `<USUARIO>` e `<SENHA>` pelas credenciais do seu MongoDB Atlas.
      - Após isso utilize esses comandos:
-           ```env
+       ```env
                 npm start
                npx prisma validade
                npx prisma generate
