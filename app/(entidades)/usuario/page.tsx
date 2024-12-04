@@ -1,53 +1,122 @@
 "use client"; // Certifique-se de que o componente seja um "componente do cliente"
 
 import { useSession } from "next-auth/react"; // Hook para obter o estado da sessão
-import { useState, useEffect } from "react"; // Para gerenciamento de estado
+import { useState, useEffect } from "react"; // Para gerenciamento de estado e otimização
 import styles from "@/app/(entidades)/entidades.module.css"; // Importe seu estilo
 import Link from "next/link"; // Para links de navegação
 import { signOut } from "next-auth/react";
 
 export default function Usuario() {
-  // Obtém os dados da sessão
-  const { data: session, status } = useSession(); // status pode ser "loading", "authenticated" ou "unauthenticated"
-  const [message, setMessage] = useState<string | null>(null); // Mensagem de erro ou sucesso
+  const { data: session, status } = useSession(); // Hook para sessão
+  const [usuarios, setUsuarios] = useState<any[]>([]); // Estado para armazenar a lista de usuários
+  const [loading, setLoading] = useState<boolean>(false); // Estado para controle de carregamento
+  const [error, setError] = useState<string | null>(null); // Estado para mensagens de erro
+
+  const role = session?.user?.role; // Obtém o papel do usuário
+
+  useEffect(() => {
+    async function fetchUsuarios() {
+      if (role === "ADMIN") { // A lógica condicional é MOVIDA para dentro da função
+        setLoading(true); // Inicia o carregamento
+        setError(null); // Reseta o erro anterior
+        try {
+          const response = await fetch("/api/usuario/listar");
+          if (!response.ok) {
+            throw new Error("Erro ao buscar usuários.");
+          }
+          const data = await response.json();
+          setUsuarios(data); // Define os usuários no estado
+        } catch (err) {
+          console.error("Erro ao buscar usuários:", err);
+          setError("Erro ao carregar a lista de usuários.");
+        } finally {
+          setLoading(false); // Finaliza o carregamento
+        }
+      }
+    }
+
+    fetchUsuarios(); // Chama a função de busca
+  }, [role]); // Dependência: executa sempre que o `role` mudar
 
   // Aguardando a sessão carregar
   if (status === "loading") {
     return <div>Carregando...</div>;
   }
 
-  // Caso o usuário não esteja autenticado, redireciona ou exibe mensagem
+  // Caso o usuário não esteja autenticado
   if (status === "unauthenticated") {
     return (
       <div>
-        <p>Você não está logado. <Link href="/usuario/forms/lgn">Clique aqui para entrar</Link></p>
+        <p>
+          Você não está logado. <Link href="/usuario/forms/lgn">Clique aqui para entrar</Link>
+        </p>
       </div>
     );
   }
-
-  // Se o usuário estiver autenticado, verifica o role
-  const role = session?.user?.role;
 
   return (
     <div className={styles.userPage}>
       <h1>Página de Administração do Usuário</h1>
 
-      {/* Exibir informações básicas do usuário */}
+      {/* Informações básicas do usuário */}
       <div className={styles.userInfo}>
-        <p><strong>Nome:</strong> {session?.user?.name}</p>
-        <p><strong>Email:</strong> {session?.user?.email}</p>
-        <p><strong>Role:</strong> {role}</p>
+        <p>
+          <strong>Nome:</strong> {session?.user?.name}
+        </p>
+        <p>
+          <strong>Email:</strong> {session?.user?.email}
+        </p>
+        <p>
+          <strong>Role:</strong> {role}
+        </p>
       </div>
 
-      {/* Conteúdo baseado no role */}
+      {/* Conteúdo para administradores */}
       {role === "ADMIN" && (
         <div className={styles.adminPanel}>
           <h2>Bem-vindo, Administrador!</h2>
           <p>Aqui você pode gerenciar todos os usuários.</p>
-          <Link href="/admin/usuarios">Gerenciar Usuários</Link>
+
+          {loading && <p>Carregando a lista de usuários...</p>}
+          {error && (
+            <div>
+              <p style={{ color: "red" }}>{error}</p>
+              <button onClick={() => fetchUsuarios()}>Tentar novamente</button>
+            </div>
+          )}
+          {!loading && !error && (
+            <div>
+              <h3>Lista de Usuários</h3>
+              <table className={styles.userTable}>
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Papel</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {usuarios.length === 0 ? (
+                    <tr>
+                      <td colSpan={3}>Nenhum usuário encontrado.</td>
+                    </tr>
+                  ) : (
+                    usuarios.map((usuario: any) => (
+                      <tr key={usuario.id}>
+                        <td>{usuario.name}</td>
+                        <td>{usuario.email}</td>
+                        <td>{usuario.role}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
 
+      {/* Conteúdo para usuários normais */}
       {role === "NORMAL" && (
         <div className={styles.userPanel}>
           <h2>Bem-vindo, {session?.user?.name}!</h2>
@@ -56,7 +125,7 @@ export default function Usuario() {
         </div>
       )}
 
-      {/* Se o usuário tem outro papel */}
+      {/* Caso o papel não esteja definido */}
       {!role && (
         <div className={styles.guestPanel}>
           <h2>Papel não definido</h2>
@@ -64,22 +133,17 @@ export default function Usuario() {
         </div>
       )}
 
-      {/* Se desejar implementar a opção de logout */}
-      <button onClick={() => handleLogout()} className={styles.logoutButton}>
+      {/* Botão de logout */}
+      <button onClick={handleLogout} className={styles.logoutButton}>
         Sair
       </button>
-
-      {message && <p>{message}</p>}
     </div>
   );
 }
 
-// Função de logout
+// Função para logout
 async function handleLogout() {
-  console.log("Tentando efetuar logout...");
-  
   try {
-    // Use o signOut do NextAuth e permita redirecionar após o logout
     await signOut({ callbackUrl: "/usuario/forms/lgn" });
   } catch (error) {
     console.error("Erro ao fazer logout:", error);
