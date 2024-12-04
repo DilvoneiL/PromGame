@@ -26,13 +26,13 @@ export default function Topo() {
         {/* Centro: Nome e Pesquisa */}
         <div className={styles.center}>
           <h1>PromGame</h1>
-          <div className={styles.searchContainer}>
+          {/* <div className={styles.searchContainer}>
             <input
               className={styles.searchInput}
               type="text"
               placeholder="Search"
             />
-          </div>
+          </div> */}
         </div>
 
         {/* Direita: Menu */}
