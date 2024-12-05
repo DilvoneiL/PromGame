@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react"; // Hook para obter o estado da ses
 import { useState, useEffect } from "react"; // Para gerenciamento de estado e otimização
 import styles from "@/app/(entidades)/entidades.module.css"; // Importe seu estilo
 import Link from "next/link"; // Para links de navegação
-import { signOut } from "next-auth/react";
+import { signOut } from "next-auth/react"; // Para realizar o logout
 
 export default function Usuario() {
   const { data: session, status } = useSession(); // Hook para sessão
@@ -40,35 +40,29 @@ export default function Usuario() {
 
   // Aguardando a sessão carregar
   if (status === "loading") {
-    return <div>Carregando...</div>;
+    return <div className={styles.loading}>Carregando...</div>;
   }
 
   // Caso o usuário não esteja autenticado
   if (status === "unauthenticated") {
     return (
-      <div>
+      <div className={styles.entidade}>
         <p>
-          Você não está logado. <Link href="/usuario/forms/lgn">Clique aqui para entrar</Link>
+          Você não está logado. <Link href="/usuario/forms/lgn" className={styles.link}>Clique aqui para entrar</Link>
         </p>
       </div>
     );
   }
 
   return (
-    <div className={styles.userPage}>
+    <div className={styles.entidade}>
       <h1>Página de Administração do Usuário</h1>
 
       {/* Informações básicas do usuário */}
       <div className={styles.userInfo}>
-        <p>
-          <strong>Nome:</strong> {session?.user?.name}
-        </p>
-        <p>
-          <strong>Email:</strong> {session?.user?.email}
-        </p>
-        <p>
-          <strong>Role:</strong> {role}
-        </p>
+        <p><strong>Nome:</strong> {session?.user?.name}</p>
+        <p><strong>Email:</strong> {session?.user?.email}</p>
+        <p><strong>Role:</strong> {role}</p>
       </div>
 
       {/* Conteúdo para administradores */}
@@ -80,7 +74,7 @@ export default function Usuario() {
           {loading && <p>Carregando a lista de usuários...</p>}
           {error && (
             <div>
-              <p style={{ color: "red" }}>{error}</p>
+              <p className={styles.errorMessage}>{error}</p>
               <button onClick={() => fetchUsuarios()}>Tentar novamente</button>
             </div>
           )}
@@ -118,10 +112,10 @@ export default function Usuario() {
 
       {/* Conteúdo para usuários normais */}
       {role === "NORMAL" && (
-        <div className={styles.userPanel}>
+        <div className={styles.adminPanel}>
           <h2>Bem-vindo, {session?.user?.name}!</h2>
           <p>Você pode visualizar suas informações e editar seu perfil.</p>
-          <Link href="/perfil">Editar Perfil</Link>
+          <Link href="/perfil" className={styles.link}>Editar Perfil</Link>
         </div>
       )}
 
