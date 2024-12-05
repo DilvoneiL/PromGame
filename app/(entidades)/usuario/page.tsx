@@ -10,6 +10,8 @@ export default function Usuario() {
   const { data: session, status } = useSession(); // Hook para sessão
   const [usuarios, setUsuarios] = useState<any[]>([]); // Estado para armazenar a lista de usuários
   const [loading, setLoading] = useState<boolean>(false); // Estado para controle de carregamento
+  const [filteredUsuarios, setFilteredUsuarios] = useState<any[]>([]);
+  const [searchValue, setSearchValue] = useState<string>(""); // Valor de pesquisa
   const [error, setError] = useState<string | null>(null); // Estado para mensagens de erro
   const [editingUserId, setEditingUserId] = useState<string | null>(null); // Estado para o usuário em modo de edição
   const [isEditingProfile, setIsEditingProfile] = useState<boolean>(false); // Para controle de edição do perfil
@@ -122,6 +124,15 @@ export default function Usuario() {
     }
   };
 
+// Função para filtrar os usuários com base no valor da pesquisa
+const handleSearch = (value: string) => {
+  setSearchValue(value); // Atualiza o valor de pesquisa
+  const filtered = usuarios.filter((usuario) =>
+    usuario.name.toLowerCase().includes(value.toLowerCase()) || // Filtra pelo nome
+    usuario.email.toLowerCase().includes(value.toLowerCase()) // Ou pelo email
+  );
+  setFilteredUsuarios(filtered); // Atualiza a lista de usuários filtrados
+};
 
   // Aguardando a sessão carregar
   if (status === "loading") {
@@ -155,7 +166,16 @@ export default function Usuario() {
         <div className={styles.adminPanel}>
           <h2>Bem-vindo, Administrador!</h2>
           <p>Aqui você pode gerenciar todos os usuários.</p>
-
+                {/* Input de Pesquisa */}
+            <div className={styles.searchPage}>
+              <input
+                className={styles.searchPage}
+                type="text"
+                placeholder="Pesquisar por nome ou email"
+                value={searchValue}
+                onChange={(e) => handleSearch(e.target.value)} // Chama handleSearch ao digitar
+              />
+            </div>
           {loading && <p>Carregando a lista de usuários...</p>}
           {error && (
             <div>
@@ -176,12 +196,12 @@ export default function Usuario() {
                   </tr>
                 </thead>
                 <tbody>
-                  {usuarios.length === 0 ? (
+                {filteredUsuarios.length === 0 ? (
                     <tr>
                       <td colSpan={4}>Nenhum usuário encontrado.</td>
                     </tr>
                   ) : (
-                    usuarios.map((usuario: any) => (
+                    filteredUsuarios.map((usuario: any) => (
                       <tr key={usuario.id}>
                         <td>{usuario.name}</td>
                         <td>{usuario.email}</td>
