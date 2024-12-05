@@ -4,10 +4,11 @@ import { useSession } from "next-auth/react"; // Hook para obter o estado da ses
 import { useState, useEffect } from "react"; // Para gerenciamento de estado e otimização
 import styles from "@/app/(entidades)/entidades.module.css"; // Importe seu estilo
 import Link from "next/link"; // Para links de navegação
-import { signOut,signIn } from "next-auth/react"; // Para realizar o logout
+import { signOut,signIn, getSession } from "next-auth/react"; // Para realizar o logout
 
 export default function Usuario() {
   const { data: session, status } = useSession(); // Hook para sessão
+  const [userData, setUserData] = useState<{ name: string; email: string }>({ name: "", email: "" });
   const [usuarios, setUsuarios] = useState<any[]>([]); // Estado para armazenar a lista de usuários
   const [loading, setLoading] = useState<boolean>(false); // Estado para controle de carregamento
   const [filteredUsuarios, setFilteredUsuarios] = useState<any[]>([]);
@@ -23,6 +24,16 @@ export default function Usuario() {
   }); // Estado para os dados do usuário a ser editado
 
   const role = session?.user?.role; // Obtém o papel do usuário
+  
+  const fetchUserData = async () => {
+    const updatedSession = await getSession(); // Obtém os dados mais recentes da sessão
+    if (updatedSession?.user) {
+      setUserData({
+        name: updatedSession.user.name || "",
+        email: updatedSession.user.email || "",
+      });
+    }
+  };
   
   // Após a edição ser bem-sucedida:
   // Carregar a lista de usuários
@@ -76,7 +87,8 @@ export default function Usuario() {
         alert("Usuário editado com sucesso!");
         setEditingUserId(null); // Fecha o modo de edição
         fetchUsuarios(); // Atualiza a lista de usuários
-        
+        fetchUserData(); // Atualiza os dados da sessão
+    
       } else {
         alert("Erro ao editar usuário!");
       }
@@ -114,6 +126,7 @@ export default function Usuario() {
         if (response.ok) {
           alert("Usuário excluído com sucesso!");
           fetchUsuarios(); // Atualiza a lista de usuários
+          fetchUserData(); // Atualiza os dados da sessão
         } else {
           const errorResponse = await response.json(); // Captura a resposta de erro da API
           alert(`Erro ao excluir usuário: ${errorResponse.message || "Erro desconhecido."}`);
@@ -216,6 +229,7 @@ const handleSearch = (value: string) => {
                             Editar
                           </button>
                           <button onClick={() => handleDelete(usuario.id)}>Excluir</button>
+
                         </td>
                       </tr>
                     ))
@@ -245,6 +259,8 @@ const handleSearch = (value: string) => {
                   </label>
                   <button onClick={() => handleEdit(editingUserId)}>Salvar</button>
                   <button onClick={() => setEditingUserId(null)}>Cancelar</button>
+
+                  
                 </div>
               )}
             </div>
@@ -297,6 +313,7 @@ const handleSearch = (value: string) => {
         >
           Editar
         </button>
+        <button onClick={() => handleDelete(session?.user?.id)}>Excluir</button>
       </div>
     )}
   </div>
