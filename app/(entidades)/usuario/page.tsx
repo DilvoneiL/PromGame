@@ -36,6 +36,7 @@ export default function Usuario() {
       }
       const data = await response.json();
       setUsuarios(data); // Define os usuários no estado
+      setFilteredUsuarios(data);  // Inicializa o estado de usuários filtrados com todos os dados
     } catch (err) {
       console.error("Erro ao buscar usuários:", err);
       setError("Erro ao carregar a lista de usuários.");
