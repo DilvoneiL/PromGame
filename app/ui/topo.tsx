@@ -47,6 +47,9 @@ export default function Topo() {
             <li>
               <Link href="/categoria">Categorias</Link>
             </li>
+            <li>
+              <Link href="/oferta">Ofertas</Link>
+            </li>
             {/* <li>
               <Link href="/venda">Vendas</Link>
             </li> */}

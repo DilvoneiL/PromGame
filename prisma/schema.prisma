@@ -19,8 +19,16 @@ model Site {
   id       String @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
   nome     String
   endereco String
+  ofertas   Oferta[] // Relacionamento 1:N com Oferta
 }
 
+model Oferta {
+  id        String @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
+  endereco  String  // URL da oferta
+  preco     Float   // Preço da oferta
+  siteId    String   @db.ObjectId // Chave estrangeira para Site, deve ser ObjectId
+  site      Site    @relation(fields: [siteId], references: [id]) // Relaciona com Site
+}
 
 model Categoria {
   id        String      @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
