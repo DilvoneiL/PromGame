@@ -29,14 +29,15 @@ export default function Ofertas() {
   // Processa os dados recebidos
   const ofertas = data && data.length > 0 ? data : [];
 
-  const cabecalho = ["Id", "Endereço", "Preço", "Site"];
+  const cabecalho = ["Id", "Endereço", "Preço", "Site", "Jogo"];
   const linhas = ofertas.map((o) => [
-    o.id,
-    o.endereco,
-    o.preco?.toFixed(2) || "0.00", // Formata o preço como número com 2 casas decimais
-    o.site?.nome || "Sem site",
+    o.id || "", // Garante que o ID seja uma string
+    o.endereco || "", // Garante que o endereço seja uma string
+    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(o.preco || 0), // Formata o preço como string
+    o.site?.nome || "Sem site", // Garante que sempre será uma string
+    o.jogo?.nome || "Sem jogo", // Garante que sempre será uma string
   ]);
-
+  
   // Atualiza as linhas filtradas com base no input
   const handleSearch = (value: string) => {
     setSearchValue(value); // Atualiza o estado do input de pesquisa

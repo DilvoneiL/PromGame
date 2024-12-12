@@ -2,20 +2,27 @@ import prisma from "@/data/prisma";
 import Oferta from "@/app/(entidades)/oferta/oferta";
 
 // Função para obter todas as ofertas
+// Função para obter todas as ofertas
 export async function obterOfertas(): Promise<Oferta[]> {
   const ofertas = await prisma.oferta.findMany({
     include: {
       site: true, // Inclui detalhes do site relacionado
+      jogo: true, // Inclui detalhes do jogo relacionado
     },
   });
 
-  return ofertas.map((oferta) => ({
-    id: oferta.id,
-    endereco: oferta.endereco,
-    preco: oferta.preco,
-    siteId: oferta.siteId,
-    site: oferta.site, // Detalhes do site
-  }));
+  return ofertas.map(
+    (oferta) =>
+      new Oferta(
+        oferta.endereco,
+        oferta.preco,
+        oferta.siteId,
+        oferta.jogoId,
+        oferta.id,
+        oferta.site ? { nome: oferta.site.nome } : undefined,
+        oferta.jogo ? { nome: oferta.jogo.nome } : undefined
+      )
+  );
 }
 
 // Obter oferta por ID
@@ -26,11 +33,12 @@ export async function obterOferta(id: string): Promise<Oferta | null> {
     },
     include: {
       site: true, // Inclui informações do site relacionado
+      jogo: true, // Inclui informações do jogo relacionado
     },
   });
 
   return oferta
-    ? new Oferta(oferta.endereco, oferta.preco, oferta.siteId, oferta.id)
+    ? new Oferta(oferta.endereco, oferta.preco, oferta.siteId, oferta.jogoId, oferta.id)
     : null;
 }
 
@@ -42,6 +50,7 @@ export async function inserirOferta(oferta: Oferta): Promise<boolean> {
         endereco: oferta.endereco,
         preco: oferta.preco,
         siteId: oferta.siteId, // Relaciona com o site
+        jogoId: oferta.jogoId, // Relaciona com o jogo
       },
     });
     console.log("Oferta inserida com sucesso:", novaOferta);
@@ -63,7 +72,8 @@ export async function editarOferta(oferta: Oferta): Promise<boolean> {
       data: {
         endereco: oferta.endereco,
         preco: oferta.preco,
-        siteId: oferta.siteId, // Atualiza o relacionamento com o site, se necessário
+        siteId: oferta.siteId, // Atualiza o relacionamento com o site
+        jogoId: oferta.jogoId, // Atualiza o relacionamento com o jogo
       },
     });
     return ofertaEditada.id === oferta.id;
@@ -96,16 +106,17 @@ export async function buscarOferta(criterio: string): Promise<Oferta[]> {
       where: {
         OR: [
           { endereco: { contains: criterio, mode: "insensitive" } },
-          { preco: parseFloat(criterio) || 0 }, // Busca por preço, se numérico
+          { preco: isNaN(parseFloat(criterio)) ? undefined : parseFloat(criterio) }, // Busca por preço, se numérico
         ],
       },
       include: {
         site: true, // Inclui informações do site relacionado
+        jogo: true, // Inclui informações do jogo relacionado
       },
     });
     console.log("Resultado da busca:", ofertas);
     return ofertas.map((oferta) =>
-      new Oferta(oferta.endereco, oferta.preco, oferta.siteId, oferta.id)
+      new Oferta(oferta.endereco, oferta.preco, oferta.siteId, oferta.jogoId, oferta.id)
     );
   } catch (error) {
     console.error("Erro no Prisma ao buscar ofertas:", error);
