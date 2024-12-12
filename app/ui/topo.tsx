@@ -50,6 +50,9 @@ export default function Topo() {
             <li>
               <Link href="/oferta">Ofertas</Link>
             </li>
+            <li>
+              <Link href="/jogo">Jogos</Link>
+            </li>
             {/* <li>
               <Link href="/venda">Vendas</Link>
             </li> */}
