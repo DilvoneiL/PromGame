@@ -1,10 +1,9 @@
 "use client"; // Certifique-se de que o componente seja um "componente do cliente"
 
-import { useSession } from "next-auth/react"; // Hook para obter o estado da sessão
 import { useState, useEffect } from "react"; // Para gerenciamento de estado e otimização
 import styles from "@/app/(entidades)/entidades.module.css"; // Importe seu estilo
 import Link from "next/link"; // Para links de navegação
-import { signOut,signIn, getSession } from "next-auth/react"; // Para realizar o logout
+import { signOut, getSession, useSession } from "next-auth/react"; // Para realizar o logout
 
 export default function Usuario() {
   const { data: session, status } = useSession(); // Hook para sessão
