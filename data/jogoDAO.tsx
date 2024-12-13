@@ -42,17 +42,19 @@ export async function obterJogoPorId(id: string): Promise<Jogo | null> {
 
   if (!jogo) return null;
 
-  return new Jogo(
-    jogo.nome,
-    jogo.ano,
-    jogo.publisher,
-    jogo.descricao,
-    jogo.categorias.map((jc) => jc.categoria?.nome || ""),
-    jogo.ofertas,
-    // jogo.imagemUrl || null,
-    jogo.id
-  );
+  // Retorne um objeto simples em vez de uma instância de classe
+  return {
+    id: jogo.id,
+    nome: jogo.nome,
+    ano: jogo.ano,
+    publisher: jogo.publisher,
+    descricao: jogo.descricao,
+    categorias: jogo.categorias.map((jc) => jc.categoria?.nome || ""),
+    ofertas: jogo.ofertas,
+    // imagemUrl: jogo.imagemUrl || null, // Inclua a imagem, se necessário
+  };
 }
+
 
 // Função para inserir um novo jogo
 export async function inserirJogo(jogo: Jogo): Promise<boolean> {

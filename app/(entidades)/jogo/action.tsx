@@ -25,14 +25,16 @@ export async function listarJogosSWR(): Promise<Jogo[]> {
 }
 
 // Função para obter um jogo por ID
-export async function handleObterJogoPorId(id: string): Promise<Jogo | null> {
+export async function handleObterJogo(id: string): Promise<Jogo | null> {
   try {
+    // Chama a função de DAO que agora retorna um objeto simples
     return await obterJogoPorId(id);
   } catch (error) {
     console.error('Erro ao obter jogo por ID:', error);
     throw new Error('Erro ao obter jogo.');
   }
 }
+
 
 // Função para criar um novo jogo
 export async function handleInserirJogo(jogo: Jogo): Promise<boolean> {

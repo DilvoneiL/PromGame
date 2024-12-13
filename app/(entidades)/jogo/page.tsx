@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { handleRemoverJogo, handleObterJogos } from './action';
-import Jogo from "./jogo"
-import PainelCRUD from '@/app/ui/painelcrud';
+import Jogo from './jogo';
 import { useRouter } from 'next/navigation';
 
 function VisualizarJogos() {
@@ -11,6 +10,7 @@ function VisualizarJogos() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
+  const urlimg = "https://m.media-amazon.com/images/I/61Ao3yzr9xL._AC_UF894,1000_QL80_.jpg"  //img de exemplo por enquanto
   useEffect(() => {
     const fetchJogos = async () => {
       try {
@@ -30,25 +30,35 @@ function VisualizarJogos() {
   const handleRemover = async (id: string) => {
     try {
       await handleRemoverJogo(id); // Tenta remover o jogo
-      alert("Jogo removido com sucesso!"); // Sucesso
+      alert('Jogo removido com sucesso!'); // Sucesso
     } catch (error) {
-      console.error("Erro ao remover jogo:", error);
-      alert("Não foi possível remover o jogo. Tente novamente.");
+      console.error('Erro ao remover jogo:', error);
+      alert('Não foi possível remover o jogo. Tente novamente.');
     }
   };
-  
+
   return (
     <div style={{ padding: '20px' }}>
       <h1>Jogos</h1>
-      
-      {/* Painel CRUD */}
-            <PainelCRUD
-              adicionar={() => router.push("jogo/forms/adc") }
-              editar={() =>
-                router.push("/jogo/forms/edt/")
-              }
-              remover={handleRemoverJogo}
-            />
+
+      <div style={{ marginBottom: '20px' }}>
+        {/* Botão Adicionar Jogo */}
+        <button
+          style={{
+            backgroundColor: '#4caf50',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            padding: '10px 15px',
+            cursor: 'pointer',
+            marginRight: '10px',
+          }}
+          onClick={() => router.push('/jogo/forms/adc')}
+        >
+          Adicionar Jogo
+        </button>
+
+      </div>
 
       {jogos?.map((jogo) => (
         <div
@@ -66,7 +76,7 @@ function VisualizarJogos() {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            {jogo.imagemUrl && (
+            {(jogo.imagemUrl = urlimg) && (
               <img
                 src={jogo.imagemUrl}
                 alt={jogo.nome}
@@ -76,10 +86,12 @@ function VisualizarJogos() {
             <div>
               <h3 style={{ margin: 0 }}>{jogo.nome}</h3>
               <p style={{ margin: '5px 0' }}>{jogo.descricao}</p>
+              <p style={{ margin: '5px 0' }}>{jogo.id}</p>
               <small>{jogo.publisher} - {new Date(jogo.ano).getFullYear()}</small>
             </div>
           </div>
           <div style={{ display: 'flex', gap: '10px' }}>
+            {/* Botão Ver Oferta */}
             <button
               style={{
                 backgroundColor: '#4caf50',
@@ -91,8 +103,23 @@ function VisualizarJogos() {
               }}
               onClick={() => alert('Ver oferta para o jogo: ' + jogo.nome)}
             >
-              Ver Oferta
+              Visualizar
             </button>
+            {/* Botão Editar */}
+            <button
+              style={{
+                backgroundColor: '#ff9800',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '5px',
+                padding: '10px 15px',
+                cursor: 'pointer',
+              }}
+              onClick={() => router.push(`/jogo/forms/edt/${jogo.id}`)}
+            >
+              Editar
+            </button>
+            {/* Botão Remover */}
             <button
               style={{
                 backgroundColor: '#f44336',
@@ -106,9 +133,9 @@ function VisualizarJogos() {
                 if (jogo.id) {
                   handleRemover(jogo.id);
                 } else {
-                  alert("ID inválido. Não é possível remover este jogo.");
+                  alert('ID inválido. Não é possível remover este jogo.');
                 }
-              }}              
+              }}
             >
               Remover
             </button>
@@ -118,7 +145,5 @@ function VisualizarJogos() {
     </div>
   );
 }
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default VisualizarJogos;
