@@ -24,6 +24,7 @@ export default function FormAdcSite() {
 
   return (
     <div className={styles.formularioDiv}>
+      <h2>Adicionar Site</h2>
       <Image
         src="/Octagon.png"
         alt="PromGame"
@@ -34,7 +35,7 @@ export default function FormAdcSite() {
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
         <label>
           <Image
-            src="/nome.png"
+            src="/name.png"
             alt="Icon"
             width={20}
             height={20}
@@ -44,10 +45,10 @@ export default function FormAdcSite() {
         </label>
         <label>
           <Image
-            src="/endereco.png"
+            src="/site.png"
             alt="Icon"
-            width={20}
-            height={20}
+            width={25}
+            height={25}
             style={{ margin: "0px 3px -3px" }}
           />
           <input placeholder="Endereço (URL)" type="url" id="iptSiteEndereco" name="endereco" required />

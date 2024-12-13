@@ -17,16 +17,30 @@ export default function SignIn() {
     <div className={styles.formularioDiv}>
       <form className={styles.formularioForm} action={formAction}>
       <Image
-          src="/categoria.png"
+          src="/user.png"
           alt="Icon"
           width={20}
           height={20}
           style={{ margin : "0px 3px 20px"}} // Alinha a imagem ao lado do texto
         />
         <label>
+        <Image
+          src="/email.png"
+          alt="Icon"
+          width={20}
+          height={20}
+          style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
+        />
           <input name="email" type="email" placeholder="E-mail"/>
         </label>
         <label>
+        <Image
+          src="/password.png"
+          alt="Icon"
+          width={20}
+          height={20}
+          style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
+        />
           <input name="password" type="password" placeholder="Senha" />
         </label>
         <div className={styles.formularioPainel}>

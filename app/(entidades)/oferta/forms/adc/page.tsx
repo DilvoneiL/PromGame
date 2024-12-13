@@ -7,6 +7,7 @@ import Link from "next/link";
 import useSWR from "swr";
 import { handleInserirOferta } from "@/app/(entidades)/oferta/action";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function FormAdcOferta() {
   const router = useRouter();
@@ -50,9 +51,23 @@ export default function FormAdcOferta() {
 
   return (
     <div className={styles.formularioDiv}>
+      <h2>Adicionar Oferta</h2>
+      <Image
+              src="/Octagon.png"
+              alt="PromGame"
+              width={60}
+              height={60}
+              style={{ margin : "10px 0px 0px"}}
+            />
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
-        <h2>Adicionar Oferta</h2>
         <label>
+        <Image
+          src="/site.png"
+          alt="Icon"
+          width={20}
+          height={20}
+          style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
+        />
           <input
             placeholder=" Endereço da Oferta (URL):"
             type="url"
@@ -62,6 +77,13 @@ export default function FormAdcOferta() {
           />
         </label>
         <label>
+        <Image
+          src="/price.png"
+          alt="Icon"
+          width={20}
+          height={20}
+          style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
+        />
           <input
             placeholder="Valor da Oferta"
             type="number"

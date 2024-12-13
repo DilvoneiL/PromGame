@@ -32,20 +32,42 @@ export default function FormAdcUsuario() {
   return (
     <div className={styles.formularioDiv}>
         <Image
-          src="/categoria.png"
+          src="/add.png"
           alt="Icon"
           width={20}
           height={20}
           style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
         />
+        <h2>Cadastrar</h2>
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
         <label>
-          <input placeholder="Name" type="text" id="iptusuarionome" name="name" required />
+        <Image
+          src="/user.png"
+          alt="Icon"
+          width={20}
+          height={20}
+          style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
+        />
+          <input placeholder="Nome" type="text" id="iptusuarionome" name="name" required />
         </label>
         <label>
+        <Image
+          src="/email.png"
+          alt="Icon"
+          width={20}
+          height={20}
+          style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
+        />
           <input placeholder="E-mail" type="email" id="iptusuarioemail" name="email" required />
         </label>
         <label>
+        <Image
+          src="/password.png"
+          alt="Icon"
+          width={20}
+          height={20}
+          style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
+        />
           <input placeholder="Senha" type="password" id="iptusuariosenha" name="password" required />
         </label>
         {/* O campo role foi removido do formulário */}
