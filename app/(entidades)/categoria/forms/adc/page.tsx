@@ -24,6 +24,7 @@ export default function FormAdcCategoria() {
 
   return (
     <div className={styles.formularioDiv}>
+      <h2>Adicionar Categoria</h2>
       <Image
               src="/Octagon.png"
               alt="PromGame"
