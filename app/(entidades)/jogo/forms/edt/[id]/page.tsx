@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import useSWR from 'swr';
 import { handleEditarJogo, handleObterJogo } from '@/app/(entidades)/jogo/action';
+import styles from '@/app/(entidades)/entidades.module.css';
 
 interface Categoria {
   id: string;
@@ -39,7 +40,7 @@ function EditarJogo() {
           const jogoData = await handleObterJogo(jogoId);
           if (jogoData) {
             setJogo({
-              id: jogoData.id || '', // Certifica que id nunca será undefined
+              id: jogoData.id || '',
               nome: jogoData.nome,
               ano: new Date(jogoData.ano),
               publisher: jogoData.publisher,
@@ -47,7 +48,7 @@ function EditarJogo() {
               categorias: jogoData.categorias,
             });
             setNome(jogoData.nome);
-            setAno(new Date(jogoData.ano).toISOString().split('T')[0]); // Formata o ano para string yyyy-mm-dd
+            setAno(new Date(jogoData.ano).toISOString().split('T')[0]);
             setPublisher(jogoData.publisher);
             setDescricao(jogoData.descricao);
             setCategoriasSelecionadas(jogoData.categorias);
@@ -73,12 +74,11 @@ function EditarJogo() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    // Filtrar categorias para garantir que somente IDs válidos sejam enviados
+
     const categoriasFiltradas = categoriasSelecionadas.filter((catId) =>
       categorias.some((categoria) => categoria.id === catId)
     );
-  
+
     const jogoEditado = {
       id: jogoId as string,
       nome,
@@ -87,75 +87,68 @@ function EditarJogo() {
       descricao,
       categorias: categoriasFiltradas,
     };
-  
+
     try {
-      console.log("Dados enviados para edição:", jogoEditado); // Log para depuração
       const sucesso = await handleEditarJogo(jogoEditado);
       if (sucesso) {
-        alert("Jogo editado com sucesso!");
+        alert('Jogo editado com sucesso!');
       } else {
-        alert("Erro ao editar jogo.");
+        alert('Erro ao editar jogo.');
       }
     } catch (error) {
-      console.error("Erro ao editar jogo:", error);
-      alert("Erro ao editar jogo.");
+      console.error('Erro ao editar jogo:', error);
+      alert('Erro ao editar jogo.');
     }
   };
-  
-  
-  
 
   return (
-    <div>
-      <h1>Editar Jogo</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Nome:
-            <input
-              type="text"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              required
-            />
-          </label>
+    <div className={styles['AdcJogo-container']}>
+      <form className={styles['AdcJogo-form-container']} onSubmit={handleSubmit}>
+        <h1 className={styles['AdcJogo-title']}>Editar Jogo</h1>
+
+        <div className={styles['AdcJogo-form-group']}>
+          <label>Nome do Jogo:</label>
+          <input
+            type="text"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            required
+          />
         </div>
-        <div>
-          <label>
-            Ano:
-            <input
-              type="date"
-              value={ano}
-              onChange={(e) => setAno(e.target.value)}
-              required
-            />
-          </label>
+
+        <div className={styles['AdcJogo-form-group']}>
+          <label>Ano de Lançamento:</label>
+          <input
+            type="date"
+            value={ano}
+            onChange={(e) => setAno(e.target.value)}
+            required
+          />
         </div>
-        <div>
-          <label>
-            Publisher:
-            <input
-              type="text"
-              value={publisher}
-              onChange={(e) => setPublisher(e.target.value)}
-              required
-            />
-          </label>
+
+        <div className={styles['AdcJogo-form-group']}>
+          <label>Publisher:</label>
+          <input
+            type="text"
+            value={publisher}
+            onChange={(e) => setPublisher(e.target.value)}
+            required
+          />
         </div>
-        <div>
-          <label>
-            Descrição:
-            <textarea
-              value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
-              required
-            />
-          </label>
+
+        <div className={styles['AdcJogo-form-group']}>
+          <label>Descrição:</label>
+          <textarea
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            required
+          />
         </div>
-        <div>
+
+        <div className={styles['AdcJogo-categories']}>
           <h2>Selecione Categorias</h2>
           {categorias.map((categoria) => (
-            <div key={categoria.id}>
+            <div className={styles['AdcJogo-category-item']} key={categoria.id}>
               <label>
                 <input
                   type="checkbox"
@@ -168,7 +161,10 @@ function EditarJogo() {
             </div>
           ))}
         </div>
-        <button type="submit">Salvar Alterações</button>
+
+        <button className={styles['AdcJogo-submit-button']} type="submit">
+          Salvar Alterações
+        </button>
       </form>
     </div>
   );
