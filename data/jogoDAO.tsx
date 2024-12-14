@@ -1,5 +1,6 @@
 import prisma from "@/data/prisma";
 import Jogo from "@/app/(entidades)/jogo/jogo";
+import { string } from "zod";
 
 // Função para obter todos os jogos
 export async function obterJogos(): Promise<Jogo[]> {
@@ -85,6 +86,10 @@ export async function inserirJogo(jogo: Jogo): Promise<boolean> {
 
 // Função para editar um jogo existente
 export async function editarJogo(jogo: Jogo): Promise<boolean> {
+
+  console.log(`Desconectando jogo com ID ${jogo.id} de suas categorias...`);
+  await desconectarJogoDasCategorias(jogo.id);
+
   try {
     await prisma.jogo.update({
       where: { id: jogo.id },
@@ -103,6 +108,8 @@ export async function editarJogo(jogo: Jogo): Promise<boolean> {
         },
       },
     });
+    
+
     return true;
   } catch (error) {
     console.error("Erro ao editar jogo:", error);
@@ -112,7 +119,7 @@ export async function editarJogo(jogo: Jogo): Promise<boolean> {
 
 
 
-export async function desconectarJogoDasCategorias(id: string): Promise<void> {
+export async function desconectarJogoDasCategorias(id: any): Promise<void> {
   try {
     console.log(`Desconectando o jogo com ID ${id} de suas categorias...`);
 
@@ -173,3 +180,76 @@ export async function removerJogo(id: string): Promise<boolean> {
   }
 }
 
+
+// ------------Funções para gerenciar relacioanamento de categoria e jogo --------------------------:
+
+// Função para adicionar uma categoria ao jogo
+export async function adicionarCategoriaAoJogo(jogoId: string, categoriaId: string): Promise<void> {
+  try {
+    await prisma.jogosCategorias.create({
+      data: {
+        jogoId,
+        categoriaId,
+      },
+    });
+  } catch (error) {
+    console.error("Erro ao adicionar categoria ao jogo:", error);
+    throw new Error("Erro ao adicionar categoria ao jogo.");
+  }
+}
+
+// Função para remover uma categoria do jogo
+export async function removerCategoriaDoJogo(jogoId: string, categoriaId: string): Promise<void> {
+  try {
+    await prisma.jogosCategorias.deleteMany({
+      where: {
+        jogoId,
+        categoriaId,
+      },
+    });
+  } catch (error) {
+    console.error("Erro ao remover categoria do jogo:", error);
+    throw new Error("Erro ao remover categoria do jogo.");
+  }
+}
+
+// Função para listar categorias de um jogo
+export async function listarCategoriasDoJogo(jogoId: string): Promise<string[]> {
+  try {
+    const categorias = await prisma.jogosCategorias.findMany({
+      where: { jogoId },
+      include: {
+        categoria: true,
+      },
+    });
+    return categorias.map((jc) => jc.categoria?.nome || "");
+  } catch (error) {
+    console.error("Erro ao listar categorias do jogo:", error);
+    throw new Error("Erro ao listar categorias do jogo.");
+  }
+}
+
+// ------------Funções para gerenciar relacioanamento de ofertas e jogo --------------------------:
+
+
+// Função para remover um jogo
+// export async function removerJogo(id: string): Promise<boolean> {
+//   try {
+//     await prisma.jogosCategorias.deleteMany({
+//       where: { jogoId: id },
+//     });
+
+//     await prisma.oferta.deleteMany({
+//       where: { jogoId: id },
+//     });
+
+//     await prisma.jogo.delete({
+//       where: { id },
+//     });
+
+//     return true;
+//   } catch (error) {
+//     console.error("Erro ao remover jogo:", error);
+//     throw new Error("Erro ao remover jogo.");
+//   }
+// }
