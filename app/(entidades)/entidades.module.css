@@ -168,3 +168,127 @@
     margin-top: 20px;
   }
 }
+
+
+
+
+/* Css para pagina dos jogos */
+.container {
+  padding: 20px;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.actionBar {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.addButton {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.addButton:hover {
+  background-color: #45a049;
+}
+
+.loading {
+  text-align: center;
+  color: #555;
+}
+
+.error {
+  text-align: center;
+  color: red;
+}
+
+.jogoCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.jogoInfo {
+  display: flex;
+  align-items: center;
+}
+
+.jogoImage {
+  width: 80px;
+  height: 80px;
+  margin-right: 15px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.jogoNome {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.jogoDescricao {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.jogoAno {
+  font-size: 0.875rem;
+  color: #aaa;
+}
+
+.jogoActions {
+  display: flex;
+  gap: 10px;
+}
+
+.viewButton,
+.editButton,
+.deleteButton {
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.viewButton {
+  background-color: #4caf50;
+}
+
+.viewButton:hover {
+  background-color: #45a049;
+}
+
+.editButton {
+  background-color: #ff9800;
+}
+
+.editButton:hover {
+  background-color: #fb8c00;
+}
+
+.deleteButton {
+  background-color: #f44336;
+}
+
+.deleteButton:hover {
+  background-color: #e53935;
+}
