@@ -86,6 +86,7 @@ function VisualizarJogos() {
               <div>
                 <h3 className={styles.jogoNome}>{jogo.nome}</h3>
                 <p className={styles.jogoDescricao}>{jogo.descricao}</p>
+                <p>{jogo.categorias}</p>
                 <small className={styles.jogoAno}>
                   {jogo.publisher} - {new Date(jogo.ano).getFullYear()}
                 </small>
@@ -94,7 +95,7 @@ function VisualizarJogos() {
             <div className={styles.jogoActions}>
               <button
                 className={styles.viewButton}
-                onClick={() => alert('Ver oferta para o jogo: ' + jogo.nome)}
+                onClick={() => router.push(`/jogo/forms/visualizar/${jogo.id}`)}
               >
                 Visualizar
               </button>
