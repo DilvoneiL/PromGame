@@ -106,3 +106,45 @@
   position: relative; /* Mantém o rodapé no fluxo do layout */
   bottom: 0;
 }
+
+
+/* Updload da imagem css */
+.AdcJogo-upload-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 2px solid #444;
+}
+
+.AdcJogo-upload-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.AdcJogo-upload-button:hover {
+  background-color: #0056b3;
+}
+
+.AdcJogo-upload-url {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3e3e3e;
+  color: #fff;
+}
+
+.AdcJogo-upload-url:focus {
+  outline: none;
+  border: 2px solid #007bff;
+}

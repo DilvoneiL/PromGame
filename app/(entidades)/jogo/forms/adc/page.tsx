@@ -4,7 +4,7 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import { handleInserirJogo } from '../../action';
 import styles from '@/app/(entidades)/entidades.module.css';
-
+import UploadImagem from '@/app/ui/uploadImg';
 interface Categoria {
   id: string;
   nome: string;
@@ -12,6 +12,7 @@ interface Categoria {
 }
 
 function AdicionarJogo() {
+  const [imagemUrl, setImagemUrl] = useState('');
   const { data: categorias, error } = useSWR<Categoria[]>('/api/categoria/listar', fetcher);
   const [nome, setNome] = useState('');
   const [ano, setAno] = useState('');
@@ -37,6 +38,7 @@ function AdicionarJogo() {
       publisher,
       descricao,
       categorias: categoriasSelecionadas,
+      imagemUrl, // Inclui a URL da imagem
     };
 
     try {
@@ -62,11 +64,17 @@ function AdicionarJogo() {
       <form className={styles['AdcJogo-form-container']} onSubmit={handleSubmit}>
         <h1 className={styles['AdcJogo-title']}>Cadastrar Novo Jogo</h1>
 
-        <div className={styles['AdcJogo-upload-section']}>
-          <div className={styles['AdcJogo-upload-icon']}>⤴</div>
-          <p className={styles['AdcJogo-upload-description']}>
-            Clique para enviar a imagem do jogo
-          </p>
+        {/* Componente de Upload de Imagem */}
+        <UploadImagem onImageChange={setImagemUrl} />
+
+        <div className={styles['AdcJogo-form-group']}>
+          <label>Nome do Jogo:</label>
+          <input
+            type="text"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            required
+          />
         </div>
 
         <div className={styles['AdcJogo-form-group']}>
