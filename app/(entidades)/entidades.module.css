@@ -422,3 +422,94 @@
   color: #aaa;
   text-align: center;
 }
+
+/* css da pagina para visualizar o jogo */
+.VisualizarEditarJogo-container {
+  padding: 20px;
+  background-color: #1e1e1e;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.VisualizarEditarJogo-detalhes {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.VisualizarEditarJogo-imagem {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.VisualizarEditarJogo-informacoes h1 {
+  font-size: 1.5rem;
+}
+
+.VisualizarEditarJogo-favoritar {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.VisualizarEditarJogo-categorias span {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+.VisualizarEditarJogo-plataformas {
+  background-color: #2e2e2e;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.VisualizarEditarJogo-plataforma {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.VisualizarEditarJogo-plataforma-info input {
+  background-color: #444;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: #fff;
+  margin-right: 5px;
+}
+
+.VisualizarEditarJogo-plataforma-acoes button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.VisualizarEditarJogo-acessar {
+  background-color: #28a745;
+}
+
+.VisualizarEditarJogo-excluir {
+  background-color: #dc3545;
+}
+
+.VisualizarEditarJogo-editar {
+  background-color: #ffc107;
+}
