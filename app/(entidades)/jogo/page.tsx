@@ -44,7 +44,7 @@ function VisualizarJogos() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.jogoMainContainer}>
       <h1 className={styles.title}>Jogos</h1>
 
       {/* Botão Adicionar Jogo */}

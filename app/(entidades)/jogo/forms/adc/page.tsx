@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import useSWR from 'swr';
 import { handleInserirJogo } from '../../action';
+import styles from '@/app/(entidades)/entidades.module.css';
 
 interface Categoria {
   id: string;
@@ -23,9 +24,7 @@ function AdicionarJogo() {
 
   const handleSelecionarCategoria = (id: string) => {
     setCategoriasSelecionadas((prev) =>
-      prev.includes(id)
-        ? prev.filter((catId) => catId !== id)
-        : [...prev, id]
+      prev.includes(id) ? prev.filter((catId) => catId !== id) : [...prev, id]
     );
   };
 
@@ -59,56 +58,60 @@ function AdicionarJogo() {
   };
 
   return (
-    <div>
-      <h1>Adicionar Jogo</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Nome:
-            <input
-              type="text"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              required
-            />
-          </label>
+    <div className={styles['AdcJogo-container']}>
+      <form className={styles['AdcJogo-form-container']} onSubmit={handleSubmit}>
+        <h1 className={styles['AdcJogo-title']}>Cadastrar Novo Jogo</h1>
+
+        <div className={styles['AdcJogo-upload-section']}>
+          <div className={styles['AdcJogo-upload-icon']}>⤴</div>
+          <p className={styles['AdcJogo-upload-description']}>
+            Clique para enviar a imagem do jogo
+          </p>
         </div>
-        <div>
-          <label>
-            Ano:
-            <input
-              type="date"
-              value={ano}
-              onChange={(e) => setAno(e.target.value)}
-              required
-            />
-          </label>
+
+        <div className={styles['AdcJogo-form-group']}>
+          <label>Nome do Jogo:</label>
+          <input
+            type="text"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            required
+          />
         </div>
-        <div>
-          <label>
-            Publisher:
-            <input
-              type="text"
-              value={publisher}
-              onChange={(e) => setPublisher(e.target.value)}
-              required
-            />
-          </label>
+
+        <div className={styles['AdcJogo-form-group']}>
+          <label>Ano de Lançamento:</label>
+          <input
+            type="date"
+            value={ano}
+            onChange={(e) => setAno(e.target.value)}
+            required
+          />
         </div>
-        <div>
-          <label>
-            Descrição:
-            <textarea
-              value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
-              required
-            />
-          </label>
+
+        <div className={styles['AdcJogo-form-group']}>
+          <label>Publisher:</label>
+          <input
+            type="text"
+            value={publisher}
+            onChange={(e) => setPublisher(e.target.value)}
+            required
+          />
         </div>
-        <div>
+
+        <div className={styles['AdcJogo-form-group']}>
+          <label>Descrição:</label>
+          <textarea
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className={styles['AdcJogo-categories']}>
           <h2>Selecione Categorias</h2>
           {categorias.map((categoria) => (
-            <div key={categoria.id}>
+            <div className={styles['AdcJogo-category-item']} key={categoria.id}>
               <label>
                 <input
                   type="checkbox"
@@ -121,7 +124,10 @@ function AdicionarJogo() {
             </div>
           ))}
         </div>
-        <button type="submit">Salvar Jogo</button>
+
+        <button className={styles['AdcJogo-submit-button']} type="submit">
+          Cadastrar
+        </button>
       </form>
     </div>
   );
