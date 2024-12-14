@@ -163,3 +163,40 @@
   font-size: 0.9rem;
   color: #ccc;
 }
+
+.searchPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0; /* Espaçamento superior/inferior */
+}
+
+.searchPage input {
+  width: 1000px;
+  padding: 12px 20px;
+  font-size: 16px;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 25px; /* Torna o campo arredondado */
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra sutil */
+  transition: all 0.3s ease; /* Animação para foco */
+}
+
+.searchPage input:focus {
+  border-color: #007bff; /* Cor de destaque no foco */
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3); /* Realça o foco */
+}
+
+.searchPage input::placeholder {
+  color: #aaa; /* Cor do texto placeholder */
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .searchPage input {
+    max-width: 300px;
+    font-size: 14px;
+    padding: 10px 15px; /* Ajusta para telas menores */
+  }
+}

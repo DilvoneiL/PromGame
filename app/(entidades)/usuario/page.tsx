@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"; // Para gerenciamento de estado e o
 import styles from "@/app/(entidades)/entidades.module.css"; // Importe seu estilo
 import Link from "next/link"; // Para links de navegação
 import { signOut, getSession, useSession } from "next-auth/react"; // Para realizar o logout
+import Filtro from "@/app/ui/seach";
 
 export default function Usuario() {
   const { data: session, status } = useSession(); // Hook para sessão
@@ -137,15 +138,15 @@ export default function Usuario() {
     }
   };
 
-// Função para filtrar os usuários com base no valor da pesquisa
-const handleSearch = (value: string) => {
-  setSearchValue(value); // Atualiza o valor de pesquisa
-  const filtered = usuarios.filter((usuario) =>
-    usuario.name.toLowerCase().includes(value.toLowerCase()) || // Filtra pelo nome
-    usuario.email.toLowerCase().includes(value.toLowerCase()) // Ou pelo email
-  );
-  setFilteredUsuarios(filtered); // Atualiza a lista de usuários filtrados
-};
+// // Função para filtrar os usuários com base no valor da pesquisa
+// const handleSearch = (value: string) => {
+//   setSearchValue(value); // Atualiza o valor de pesquisa
+//   const filtered = usuarios.filter((usuario) =>
+//     usuario.name.toLowerCase().includes(value.toLowerCase()) || // Filtra pelo nome
+//     usuario.email.toLowerCase().includes(value.toLowerCase()) // Ou pelo email
+//   );
+//   setFilteredUsuarios(filtered); // Atualiza a lista de usuários filtrados
+// };
 
   // Aguardando a sessão carregar
   if (status === "loading") {
@@ -179,16 +180,23 @@ const handleSearch = (value: string) => {
         <div className={styles.adminPanel}>
           <h2>Bem-vindo, Administrador!</h2>
           <p>Aqui você pode gerenciar todos os usuários.</p>
-                {/* Input de Pesquisa */}
-            <div className={styles.searchPage}>
-              <input
-                className={styles.searchPage}
-                type="text"
-                placeholder="Pesquisar por nome ou email"
-                value={searchValue}
-                onChange={(e) => handleSearch(e.target.value)} // Chama handleSearch ao digitar
-              />
-            </div>
+             {/* Componente Filtro */}
+          <Filtro
+            placeholder="Pesquisar por nome ou email"
+            dados={usuarios.map((u) => [u.name, u.email, u.role, u.id])}
+            filtro={(linha, valor) =>
+              linha[0].toLowerCase().includes(valor.toLowerCase()) ||
+              linha[1].toLowerCase().includes(valor.toLowerCase())
+            }
+            onFiltrar={(linhasFiltradas) => {
+              setFilteredUsuarios(linhasFiltradas.map((linha) => ({
+                name: linha[0],
+                email: linha[1],
+                role: linha[2],
+                id: linha[3],
+              })));
+            }}
+          />
           {loading && <p>Carregando a lista de usuários...</p>}
           {error && (
             <div>
