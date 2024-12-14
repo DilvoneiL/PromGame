@@ -1,6 +1,6 @@
 'use server';
 
-import { obterOfertas, obterOferta, inserirOferta, editarOferta, removerOferta, buscarOferta } from '@/data/ofertaDAO';
+import { obterOfertas, obterOfertaPorId, inserirOferta, editarOferta, removerOferta,buscarOfertas } from '@/data/ofertaDAO';
 import Oferta from '@/app/(entidades)/oferta/oferta';
 
 // Função para obter todas as ofertas
@@ -21,7 +21,7 @@ export async function listarOfertasSWR(): Promise<Oferta[]> {
 // Função para obter uma oferta por ID
 export async function handleObterOfertaPorId(id: string): Promise<Oferta | null> {
   try {
-    return await obterOferta(id);
+    return await obterOfertaPorId(id);
   } catch (error) {
     console.error('Erro ao obter oferta por ID:', error);
     throw new Error('Erro ao obter oferta.');
@@ -61,7 +61,7 @@ export async function handleRemoverOferta(id: string): Promise<boolean> {
 // Função para buscar ofertas por um critério
 export async function handleBuscarOferta(criterio: string): Promise<Oferta[]> {
   try {
-    return await buscarOferta(criterio);
+    return await buscarOfertas(criterio);
   } catch (error) {
     console.error('Erro ao buscar ofertas:', error);
     throw new Error('Erro ao buscar ofertas.');

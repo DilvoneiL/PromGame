@@ -1,22 +1,22 @@
 'use client';
 import styles from "@/app/(entidades)/entidades.module.css";
 
-import Oferta from "./oferta";
-import Tabela, { obterSelecionadas } from "@/app/ui/tabela";
-import PainelCRUD from "@/app/ui/painelcrud";
-
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { handleRemoverOferta, listarOfertasSWR} from "./action";
+import Tabela, { obterSelecionadas } from "@/app/ui/tabela";
+import PainelCRUD from "@/app/ui/painelcrud";
+import { handleRemoverOferta, listarOfertasSWR } from "./action";
 
 export default function Ofertas() {
   const router = useRouter();
 
-  const { data, error, isLoading } = useSWR('/api/ofertas/listar', listarOfertasSWR);
+  // Obter dados das ofertas com SWR
+  const { data, error, isLoading } = useSWR("/api/ofertas/listar", listarOfertasSWR);
 
-  const [searchValue, setSearchValue] = useState(""); // Estado para valor do input de pesquisa
-  const [filteredLinhas, setFilteredLinhas] = useState<string[][]>([]); // Estado para linhas filtradas
+  // Estados para pesquisa e filtragem
+  const [searchValue, setSearchValue] = useState(""); // Valor do input de pesquisa
+  const [filteredLinhas, setFilteredLinhas] = useState<string[][]>([]); // Linhas filtradas
 
   if (isLoading) {
     return (
@@ -26,28 +26,41 @@ export default function Ofertas() {
     );
   }
 
-  // Processa os dados recebidos
+  if (error) {
+    return (
+      <div className={styles.entidade}>
+        <h1>Erro ao carregar as ofertas.</h1>
+      </div>
+    );
+  }
+
+  // Processa as ofertas recebidas
   const ofertas = data && data.length > 0 ? data : [];
 
+  // Cabeçalho da tabela
   const cabecalho = ["Id", "Endereço", "Preço", "Site", "Jogo"];
-  const linhas = ofertas.map((o) => [
-    o.id || "", // Garante que o ID seja uma string
-    o.endereco || "", // Garante que o endereço seja uma string
-    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(o.preco || 0), // Formata o preço como string
-    o.site?.nome || "Sem site", // Garante que sempre será uma string
-    o.jogo?.nome || "Sem jogo", // Garante que sempre será uma string
+
+  // Mapeia as ofertas em linhas da tabela
+  const linhas = ofertas.map((oferta) => [
+    oferta.id || "Sem ID", // ID da oferta
+    oferta.endereco || "Sem endereço", // Endereço da oferta
+    new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(oferta.preco || 0), // Preço formatado em BRL
+    oferta.site?.nome || "Sem site", // Nome do site associado
+    oferta.jogo?.nome || "Sem jogo", // Nome do jogo associado
   ]);
-  
-  // Atualiza as linhas filtradas com base no input
+
+  // Função para pesquisar nas linhas
   const handleSearch = (value: string) => {
-    setSearchValue(value); // Atualiza o estado do input de pesquisa
+    setSearchValue(value); // Atualiza o estado da pesquisa
     const filtered = linhas.filter((linha) =>
-      linha[1]?.toLowerCase().includes(value.toLowerCase()) // Filtra pelo endereço
+      linha.some((coluna) =>
+        coluna.toLowerCase().includes(value.toLowerCase())
+      )
     );
-    setFilteredLinhas(filtered); // Atualiza o estado com as linhas filtradas
+    setFilteredLinhas(filtered); // Atualiza as linhas filtradas
   };
 
-  // Define se deve usar as linhas filtradas ou todas as linhas
+  // Define se usa as linhas filtradas ou todas
   const linhasExibidas = searchValue ? filteredLinhas : linhas;
 
   return (
@@ -57,9 +70,9 @@ export default function Ofertas() {
         <input
           className={styles.searchPage}
           type="text"
-          placeholder="Search"
+          placeholder="Pesquisar ofertas"
           value={searchValue}
-          onChange={(e) => handleSearch(e.target.value)} // Chama handleSearch ao digitar
+          onChange={(e) => handleSearch(e.target.value)} // Atualiza a pesquisa ao digitar
         />
       </div>
 
@@ -67,27 +80,28 @@ export default function Ofertas() {
       <PainelCRUD
         adicionar={() => router.push("/oferta/forms/adc")}
         editar={() =>
-          router.push("/ofertas/forms/edt/" + obterSelecionadas(true)[0][0])
+          router.push("/oferta/forms/edt/" + obterSelecionadas(true)[0][0])
         }
         remover={cliqueRemover}
       />
 
-      {/* Tabela com as linhas filtradas */}
+      {/* Tabela com ofertas */}
       <Tabela cabecalho={cabecalho} linhas={linhasExibidas} />
+      <p>{linhas}</p>
     </div>
   );
 }
 
-// Função de remoção
+// Função para remover uma oferta
 async function cliqueRemover() {
-  const valores = obterSelecionadas(true);
+  const valores = obterSelecionadas(true); // Obtém as ofertas selecionadas
   if (valores.length === 0) {
     alert("Selecione uma oferta na tabela.");
     return;
   }
 
   try {
-    const sucesso = await handleRemoverOferta(valores[0][0]); // Atualizado para handleRemoverOferta
+    const sucesso = await handleRemoverOferta(valores[0][0]); // Remove a oferta selecionada
     if (sucesso) {
       alert("Oferta removida com sucesso.");
     } else {

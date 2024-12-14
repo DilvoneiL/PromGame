@@ -1,16 +1,22 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { handleObterOfertas } from "@/app/(entidades)/oferta/action";
+import { NextResponse } from "next/server";
+import { obterOfertas } from "@/data/ofertaDAO";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "GET") {
-    try {
-      const ofertas = await handleObterOfertas();
-      res.status(200).json(ofertas);
-    } catch (error) {
-      console.error("Erro ao listar ofertas:", error);
-      res.status(500).json({ error: "Erro ao listar ofertas." });
-    }
-  } else {
-    res.status(405).json({ error: "Método não permitido." });
+export async function GET(request: Request) {
+  try {
+    // Obtém o parâmetro `jogoId` da URL, se existir
+    const { searchParams } = new URL(request.url);
+    const jogoId = searchParams.get("jogoId") || undefined;
+
+    // Chama a função obterOfertas passando o jogoId (se fornecido)
+    const ofertas = await obterOfertas(jogoId);
+
+    // Retorna as ofertas em formato JSON
+    return NextResponse.json(ofertas, { status: 200 });
+  } catch (error) {
+    console.error("Erro ao listar ofertas:", error);
+    return NextResponse.json(
+      { mensagem: "Erro ao listar ofertas." },
+      { status: 500 }
+    );
   }
 }
