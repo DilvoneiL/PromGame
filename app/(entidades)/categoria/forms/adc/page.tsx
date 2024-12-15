@@ -26,33 +26,40 @@ export default function FormAdcCategoria() {
     <div className={styles.formularioDiv}>
       <h2>Adicionar Categoria</h2>
       <Image
-              src="/Octagon.png"
-              alt="PromGame"
-              width={60}
-              height={60}
-              style={{ margin : "10px 0px 0px"}}
-            />
+        src="/Octagon.png"
+        alt="PromGame"
+        width={60}
+        height={60}
+        style={{ margin: "10px 0px 0px" }}
+      />
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
+        
+        {/* Título Nome */}
+        <p style={{ margin: "0 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Nome da Categoria:</p>
         <label>
-        <Image
-          src="/categoria.png"
-          alt="Icon"
-          width={20}
-          height={20}
-          style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
-        />
+          <Image
+            src="/categoria.png"
+            alt="Icon"
+            width={20}
+            height={20}
+            style={{ margin: "0px 3px -3px" }} // Alinha a imagem ao lado do texto
+          />
           <input placeholder="Nome" type="text" id="iptcategoriaNome" name="nome" required />
         </label>
+
+        {/* Título Descrição */}
+        <p style={{ margin: "10px 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Descrição da Categoria:</p>
         <label>
-        <Image
-          src="/descrição.png"
-          alt="Icon"
-          width={20}
-          height={20}
-          style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
-        />
+          <Image
+            src="/descrição.png"
+            alt="Icon"
+            width={20}
+            height={20}
+            style={{ margin: "0px 3px -3px" }} // Alinha a imagem ao lado do texto
+          />
           <input placeholder="Descrição" type="text" id="iptcategoriaDescricao" name="descricao" required />
         </label>
+
         <div className={styles.formularioPainel}>
           <SubmitButton rotulo="Confirmar" />
           <Link href="/categoria">
