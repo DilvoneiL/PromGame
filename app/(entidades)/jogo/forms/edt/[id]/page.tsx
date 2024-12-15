@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import useSWR from 'swr';
 import { handleEditarJogo, handleObterJogo } from '@/app/(entidades)/jogo/action';
 import styles from '@/app/(entidades)/entidades.module.css';
+import { useRouter } from 'next/navigation';
 
 interface Categoria {
   id: string;
@@ -32,6 +33,7 @@ function EditarJogo() {
   const [publisher, setPublisher] = useState('');
   const [descricao, setDescricao] = useState('');
   const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<string[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchJogo() {
@@ -92,6 +94,7 @@ function EditarJogo() {
       const sucesso = await handleEditarJogo(jogoEditado);
       if (sucesso) {
         alert('Jogo editado com sucesso!');
+        router.push('/jogo');
       } else {
         alert('Erro ao editar jogo.');
       }

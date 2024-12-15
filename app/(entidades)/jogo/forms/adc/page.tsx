@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import { handleInserirJogo } from '../../action';
 import styles from '@/app/(entidades)/entidades.module.css';
 import UploadImagem from '@/app/ui/uploadImg';
+import { useRouter } from 'next/navigation';
 interface Categoria {
   id: string;
   nome: string;
@@ -19,7 +20,7 @@ function AdicionarJogo() {
   const [publisher, setPublisher] = useState('');
   const [descricao, setDescricao] = useState('');
   const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<string[]>([]);
-
+  const router = useRouter();
   if (error) return <div>Erro ao carregar categorias.</div>;
   if (!categorias) return <div>Carregando categorias...</div>;
 
@@ -50,6 +51,7 @@ function AdicionarJogo() {
         setPublisher('');
         setDescricao('');
         setCategoriasSelecionadas([]);
+        router.push('/jogo'); // Adicionado
       } else {
         alert('Erro ao adicionar jogo.');
       }
@@ -66,16 +68,6 @@ function AdicionarJogo() {
 
         {/* Componente de Upload de Imagem */}
         <UploadImagem onImageChange={setImagemUrl} />
-
-        <div className={styles['AdcJogo-form-group']}>
-          <label>Nome do Jogo:</label>
-          <input
-            type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
-          />
-        </div>
 
         <div className={styles['AdcJogo-form-group']}>
           <label>Nome do Jogo:</label>
