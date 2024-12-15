@@ -34,6 +34,7 @@ function VisualizarEditarJogo() {
   const { data: categorias, error: categoriasError } = useSWR<Categoria[]>('/api/categoria/listar', fetcher);
   const [jogo, setJogo] = useState<Jogo | null>(null);
   const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<string[]>([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false); // Estado do Dropdown
 
   useEffect(() => {
     async function fetchJogo() {
@@ -64,18 +65,14 @@ function VisualizarEditarJogo() {
   if (!categorias || !jogo) return <div>Carregando...</div>;
 
   const handleSelecionarCategoria = async (id: string) => {
-    // Verifica se a categoria já está selecionada
     const jaSelecionada = categoriasSelecionadas.includes(id);
-
-    // Atualiza o estado local de categorias
     const atualizadas = jaSelecionada
-      ? categoriasSelecionadas.filter((catId) => catId !== id) // Remove se já estava selecionada
-      : [...categoriasSelecionadas, id]; // Adiciona se não estava selecionada
+      ? categoriasSelecionadas.filter((catId) => catId !== id)
+      : [...categoriasSelecionadas, id];
 
     setCategoriasSelecionadas(atualizadas);
 
     try {
-      // Faz a atualização no servidor
       const response = await fetch(`/api/jogo/${jogoId}/categorias`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -129,25 +126,30 @@ function VisualizarEditarJogo() {
         />
         <div className={styles['VisualizarEditarJogo-informacoes']}>
           <h1>{jogo.titulo}</h1>
-          <p>{jogo.descricao}</p>
+          <div className={styles['VisualizarEditarJogo-descricao']}>
+            <p>{jogo.descricao}</p>
+          </div>
+
+          {/* Botão Dropdown de Categorias */}
           <div className={styles['VisualizarEditarJogo-categorias']}>
-            {categorias.length === 0 ? (
-              <p>Nenhuma categoria disponível.</p>
-            ) : (
-              categorias.map((categoria) => (
-                <div key={categoria.id} className={styles['VisualizarEditarJogo-categoria']}>
-                  <label>
-                    {/* Compara a categoria atual com as já selecionadas do jogo */}
-                    <input
-                      type="checkbox"
-                      value={categoria.id}
-                      checked={categoriasSelecionadas.includes(categoria.id)}
-                      onChange={() => handleSelecionarCategoria(categoria.id)}
-                    />
-                    {categoria.nome}
-                  </label>
-                </div>
-              ))
+            <button
+              className={styles['VisualizarEditarJogo-dropdownButton']}
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              Adicionar ▼
+            </button>
+            {dropdownOpen && (
+              <div className={styles['VisualizarEditarJogo-dropdownMenu']}>
+                {categorias.map((categoria) => (
+                  <div
+                    key={categoria.id}
+                    className={styles['VisualizarEditarJogo-dropdownItem']}
+                    onClick={() => handleSelecionarCategoria(categoria.id)}
+                  >
+                    {categoriasSelecionadas.includes(categoria.id) ? "✅" : ""} {categoria.nome}
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         </div>
@@ -162,10 +164,7 @@ function VisualizarEditarJogo() {
           +
         </button>
         {jogo.ofertas.map((oferta) => (
-          <div
-            key={oferta.id}
-            className={styles['VisualizarEditarJogo-plataforma']}
-          >
+          <div key={oferta.id} className={styles['VisualizarEditarJogo-plataforma']}>
             <div className={styles['VisualizarEditarJogo-plataforma-info']}>
               <input
                 type="text"
