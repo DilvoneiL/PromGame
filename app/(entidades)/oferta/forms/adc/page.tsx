@@ -83,29 +83,35 @@ export default function FormAdcOferta() {
         style={{ margin: "10px 0px 0px" }}
       />
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
+        
+        {/* Título Endereço da Oferta */}
+        <p style={{ margin: "0 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Endereço da Oferta:</p>
         <label>
           <Image
             src="/site.png"
             alt="Icon"
             width={20}
             height={20}
-            style={{ margin: "0px 3px -3px" }} // Alinha a imagem ao lado do texto
+            style={{ margin: "0px 3px -3px" }}
           />
           <input
-            placeholder=" Endereço da Oferta (URL):"
+            placeholder=" Endereço da Oferta (URL)"
             type="url"
             id="iptOfertaEndereco"
             name="endereco"
             required
           />
         </label>
+
+        {/* Título Valor da Oferta */}
+        <p style={{ margin: "10px 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Valor da Oferta:</p>
         <label>
           <Image
             src="/price.png"
             alt="Icon"
             width={20}
             height={20}
-            style={{ margin: "0px 3px -3px" }} // Alinha a imagem ao lado do texto
+            style={{ margin: "0px 3px -3px" }}
           />
           <input
             placeholder="Valor da Oferta"
@@ -116,6 +122,9 @@ export default function FormAdcOferta() {
             required
           />
         </label>
+
+        {/* Título Site */}
+        <p style={{ margin: "10px 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Site:</p>
         <label>
           <select name="siteId" id="selOfertaSite" required>
             <option value="">Selecione um site</option>
@@ -127,6 +136,9 @@ export default function FormAdcOferta() {
               ))}
           </select>
         </label>
+
+        {/* Título Jogo */}
+        <p style={{ margin: "10px 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Jogo:</p>
         <label>
           <select name="jogoId" id="selOfertaJogo" required>
             <option value="">Selecione um jogo</option>
@@ -137,6 +149,7 @@ export default function FormAdcOferta() {
             ))}
           </select>
         </label>
+
         <div className={styles.formularioPainel}>
           <SubmitButton rotulo="Confirmar" />
           <Link href="/oferta">
