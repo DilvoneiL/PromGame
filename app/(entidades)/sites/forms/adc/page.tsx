@@ -33,6 +33,9 @@ export default function FormAdcSite() {
         style={{ margin: "10px 0px 0px" }}
       />
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
+        
+        {/* Título Nome */}
+        <p style={{ margin: "0 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Nome:</p>
         <label>
           <Image
             src="/name.png"
@@ -41,8 +44,17 @@ export default function FormAdcSite() {
             height={20}
             style={{ margin: "0px 3px -3px" }}
           />
-          <input placeholder="Nome" type="text" id="iptSiteNome" name="nome" required />
+          <input
+            placeholder="Nome"
+            type="text"
+            id="iptSiteNome"
+            name="nome"
+            required
+          />
         </label>
+
+        {/* Título Endereço (URL) */}
+        <p style={{ margin: "10px 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Endereço (URL):</p>
         <label>
           <Image
             src="/site.png"
@@ -51,8 +63,15 @@ export default function FormAdcSite() {
             height={25}
             style={{ margin: "0px 3px -3px" }}
           />
-          <input placeholder="Endereço (URL)" type="url" id="iptSiteEndereco" name="endereco" required />
+          <input
+            placeholder="Endereço (URL)"
+            type="url"
+            id="iptSiteEndereco"
+            name="endereco"
+            required
+          />
         </label>
+
         <div className={styles.formularioPainel}>
           <SubmitButton rotulo="Confirmar" />
           <Link href="/sites">

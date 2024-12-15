@@ -52,6 +52,9 @@ export default function FormEdtSite({ params }: { params: { id: string } }) {
         style={{ margin: "10px 0px 0px" }}
       />
       <form className={styles.formularioForm} action={formAction}>
+
+        {/* Título ID */}
+        <p style={{ margin: "0 0 5px", color: "#ccc", fontSize: "0.8rem" }}>ID:</p>
         <label>
           <input
             type="text"
@@ -62,6 +65,9 @@ export default function FormEdtSite({ params }: { params: { id: string } }) {
             required
           />
         </label>
+
+        {/* Título Nome */}
+        <p style={{ margin: "10px 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Nome:</p>
         <label>
           <input
             type="text"
@@ -71,6 +77,9 @@ export default function FormEdtSite({ params }: { params: { id: string } }) {
             required
           />
         </label>
+
+        {/* Título URL */}
+        <p style={{ margin: "10px 0 5px", color: "#ccc", fontSize: "0.8rem" }}>URL:</p>
         <label>
           <input
             type="url"
@@ -80,6 +89,7 @@ export default function FormEdtSite({ params }: { params: { id: string } }) {
             required
           />
         </label>
+
         <div className={styles.formularioPainel}>
           <SubmitButton rotulo="Confirmar" />
           <Link href="/sites">
