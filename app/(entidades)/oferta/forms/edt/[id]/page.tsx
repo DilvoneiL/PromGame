@@ -96,7 +96,6 @@ export default function FormEdtOferta() {
 
   return (
     <div className={styles.formularioDiv}>
-      <h2>Editar Oferta</h2>
       <Image
         src="/Octagon.png"
         alt="PromGame"
@@ -105,6 +104,10 @@ export default function FormEdtOferta() {
         style={{ margin: "10px 0px 0px" }}
       />
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
+        <h1 className={styles.title}>Editar Oferta</h1>
+        
+        {/* Título Endereço da Oferta */}
+        <p style={{ margin: "0 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Endereço da Oferta:</p>
         <label>
           <Image
             src="/site.png"
@@ -114,7 +117,7 @@ export default function FormEdtOferta() {
             style={{ margin: "0px 3px -3px" }}
           />
           <input
-            placeholder="Endereço da Oferta (URL):"
+            placeholder="Endereço da Oferta (URL)"
             type="url"
             id="iptOfertaEndereco"
             name="endereco"
@@ -122,6 +125,9 @@ export default function FormEdtOferta() {
             required
           />
         </label>
+
+        {/* Título Valor da Oferta */}
+        <p style={{ margin: "10px 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Valor da Oferta:</p>
         <label>
           <Image
             src="/price.png"
@@ -140,6 +146,9 @@ export default function FormEdtOferta() {
             required
           />
         </label>
+
+        {/* Título Site */}
+        <p style={{ margin: "10px 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Site:</p>
         <label>
           <select name="siteId" id="selOfertaSite" defaultValue={oferta.siteId} required>
             <option value="">Selecione um site</option>
@@ -151,6 +160,9 @@ export default function FormEdtOferta() {
               ))}
           </select>
         </label>
+
+        {/* Título Jogo */}
+        <p style={{ margin: "10px 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Jogo:</p>
         <label>
           <select name="jogoId" id="selOfertaJogo" defaultValue={oferta.jogoId} required>
             <option value="">Selecione um jogo</option>
@@ -161,15 +173,14 @@ export default function FormEdtOferta() {
             ))}
           </select>
         </label>
+
         <div className={styles.formularioPainel}>
           <SubmitButton rotulo="Confirmar" />
           <Link href="/oferta">
             <button type="button">Cancelar</button>
           </Link>
         </div>
-        <p aria-live="polite" role="status">
-          {mensagem}
-        </p>
+        <p aria-live="polite" role="status">{mensagem}</p>
       </form>
     </div>
   );

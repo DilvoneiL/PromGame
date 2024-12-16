@@ -24,7 +24,6 @@ export default function FormAdcSite() {
 
   return (
     <div className={styles.formularioDiv}>
-      <h2>Adicionar Site</h2>
       <Image
         src="/Octagon.png"
         alt="PromGame"
@@ -33,6 +32,7 @@ export default function FormAdcSite() {
         style={{ margin: "10px 0px 0px" }}
       />
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
+      <h1 className={styles.title}>Adicionar Site</h1>
         
         {/* Título Nome */}
         <p style={{ margin: "0 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Nome:</p>

@@ -74,7 +74,6 @@ export default function FormAdcOferta() {
 
   return (
     <div className={styles.formularioDiv}>
-      <h2>Adicionar Oferta</h2>
       <Image
         src="/Octagon.png"
         alt="PromGame"
@@ -83,6 +82,7 @@ export default function FormAdcOferta() {
         style={{ margin: "10px 0px 0px" }}
       />
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
+      <h1 className={styles.title}>Adicionar Oferta</h1>
         
         {/* Título Endereço da Oferta */}
         <p style={{ margin: "0 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Endereço da Oferta:</p>

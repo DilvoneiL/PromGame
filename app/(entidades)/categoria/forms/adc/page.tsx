@@ -24,7 +24,6 @@ export default function FormAdcCategoria() {
 
   return (
     <div className={styles.formularioDiv}>
-      <h2>Adicionar Categoria</h2>
       <Image
         src="/Octagon.png"
         alt="PromGame"
@@ -33,6 +32,7 @@ export default function FormAdcCategoria() {
         style={{ margin: "10px 0px 0px" }}
       />
       <form className={styles.formularioForm} onSubmit={handleSubmit}>
+      <h1 className={styles.title}>Adicionar Categoria</h1>
         
         {/* Título Nome */}
         <p style={{ margin: "0 0 5px", color: "#ccc", fontSize: "0.8rem" }}>Nome da Categoria:</p>
