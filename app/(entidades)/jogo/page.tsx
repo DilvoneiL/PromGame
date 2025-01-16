@@ -13,7 +13,7 @@ function VisualizarJogos() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
-  const urlimg = "https://m.media-amazon.com/images/I/61Ao3yzr9xL._AC_UF894,1000_QL80_.jpg"; // Imagem de exemplo por enquanto
+  const defaultImg = '/upload.png'; 
 
   useEffect(() => {
     const fetchJogos = async () => {
@@ -80,8 +80,12 @@ function VisualizarJogos() {
         filteredJogos.map((jogo) => (
           <div key={jogo.id} className={styles.jogoCard}>
             <div className={styles.jogoInfo}>
-              {urlimg && (
-                <img src={urlimg} alt={jogo.nome} className={styles.jogoImage} />
+              {(
+                <img
+                src={jogo.imagemUrl || defaultImg}
+                alt={jogo.nome || "Imagem do jogo"}
+                className={styles.jogoImage}
+              />
               )}
               <div>
                 <h3 className={styles.jogoNome}>{jogo.nome}</h3>
