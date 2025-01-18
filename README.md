@@ -172,4 +172,5 @@ Os endpoints seguem a estrutura organizada da pasta `api`. Os principais endpoin
 
 Entre em contato ou abra uma [issue](https://github.com/seu-repositorio/nextjs-loja/issues).
 
-ajustar imagens do banco do adicionar jogos, ajustar relação oferta com jogo e mudanças na UI
++Ajeitar pre-visualização da imagem ao editar e adicionar jogo, 
++Ajustar relação oferta com jogo e mudanças na UI
