@@ -3,10 +3,12 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import authConfig from "./auth.config";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-	adapter: PrismaAdapter(prisma),
-	session: {
-		strategy: "jwt",
-	},
-	...authConfig,
+const auth = NextAuth({
+  adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "jwt",
+  },
+  ...authConfig, // Inclui as configurações do auth.config.tsx
 });
+
+export default auth;

@@ -1,6 +1,6 @@
 "use server"
 import prisma from "@/data/prisma";
-import { signIn, signOut } from "@/app/lib/auth/auth";
+import { signIn, signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { 
@@ -12,34 +12,24 @@ import {
 } from "@/data/usuarioDAO";
 import { revalidatePath } from "next/cache";
 
-export async function efetuarLogin(prevState: any, formData: FormData) {
-
-  let success = false;
-
-  try {
-    await signIn("credentials", {
-      redirect: false,
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    });
-    success = true;
-  }
-  catch (error) {
-    success = false;
-    return { mensagem: "Email ou senha incorretos." };
+export async function efetuarLogin(email: string, password: string) {
+  // Apenas valida os dados ou faz qualquer lógica do servidor
+  if (!email || !password) {
+    return { success: false, mensagem: "Email ou senha não podem estar vazios." };
   }
 
-  if (success) {
-    console.log("Login efetuado: " + formData.get("email"));
-    redirect("/");
-  }
-
-  return { mensagem: "Não foi possível efetuar o login." };
+  return { success: true }; // Retorna para o cliente executar o login
 }
 
 export async function efetuarLogout() {
-  await signOut({ redirect: false });
-  console.log("Logout efetuado");
+  try {
+    await signOut({ redirect: false }); // Evita redirecionamento automático
+    console.log("Logout efetuado");
+    redirect("/usuario/forms/lgn"); // Redireciona para a página de login
+  } catch (error) {
+    console.error("Erro ao efetuar logout:", error);
+    return { mensagem: "Erro ao efetuar logout. Tente novamente." };
+  }
 }
 
 export async function adicionarUsuario(prevState: any, formData: FormData) {
