@@ -50,6 +50,7 @@ function AdicionarJogo() {
         setAno('');
         setPublisher('');
         setDescricao('');
+        setImagemUrl('');
         setCategoriasSelecionadas([]);
         router.push('/jogo'); // Adicionado
       } else {
@@ -66,8 +67,11 @@ function AdicionarJogo() {
       <form className={styles['AdcJogo-form-container']} onSubmit={handleSubmit}>
         <h1 className={styles['AdcJogo-title']}>Cadastrar Novo Jogo</h1>
 
-        {/* Componente de Upload de Imagem */}
-        <UploadImagem onImageChange={setImagemUrl} />
+        <div className={styles['AdcJogo-form-group']}>
+          <label>Imagem do Jogo:</label>
+          <UploadImagem onImageChange={setImagemUrl} />
+          {/* Pré-visualização da imagem */}
+        </div>
 
         <div className={styles['AdcJogo-form-group']}>
           <label>Nome do Jogo:</label>

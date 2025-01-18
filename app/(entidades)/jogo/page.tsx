@@ -13,7 +13,7 @@ function VisualizarJogos() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
-  const defaultImg = '/upload.png'; 
+  // const defaultImg = '/upload.png'; 
 
   useEffect(() => {
     const fetchJogos = async () => {
@@ -82,7 +82,7 @@ function VisualizarJogos() {
             <div className={styles.jogoInfo}>
               {(
                 <img
-                src={jogo.imagemUrl || defaultImg}
+                src={jogo.imagemUrl}
                 alt={jogo.nome || "Imagem do jogo"}
                 className={styles.jogoImage}
               />

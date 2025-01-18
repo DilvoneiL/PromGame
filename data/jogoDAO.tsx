@@ -23,7 +23,7 @@ export async function obterJogos(): Promise<Jogo[]> {
     descricao: jogo.descricao,
     categorias: jogo.categorias.map((jc) => jc.categoria?.nome || ""), // Retorna apenas os nomes das categorias
     ofertas: jogo.ofertas,
-    // imagemUrl: jogo.imagemUrl || null, // URL da imagem opcional
+    imagemUrl: jogo.imagemUrl, // URL da imagem opcional
   }));
 }
 
@@ -52,7 +52,7 @@ export async function obterJogoPorId(id: string): Promise<Jogo | null> {
     descricao: jogo.descricao,
     categorias: jogo.categorias.map((jc) => jc.categoria?.nome || ""),
     ofertas: jogo.ofertas,
-    // imagemUrl: jogo.imagemUrl || null, // Inclua a imagem, se necessário
+    imagemUrl: jogo.imagemUrl, // Inclua a imagem, se necessário
   };
 }
 
@@ -66,7 +66,7 @@ export async function inserirJogo(jogo: Jogo): Promise<boolean> {
         ano: jogo.ano,
         publisher: jogo.publisher,
         descricao: jogo.descricao,
-        // imagemUrl: jogo.imagemUrl || null,
+        imagemUrl: jogo.imagemUrl || "/upload.png",
         categorias: {
           create: jogo.categorias.map((categoriaId) => ({
             categoria: {
@@ -98,7 +98,7 @@ export async function editarJogo(jogo: Jogo): Promise<boolean> {
         ano: jogo.ano,
         publisher: jogo.publisher,
         descricao: jogo.descricao,
-        // imagemUrl: jogo.imagemUrl || null,
+        imagemUrl: jogo.imagemUrl || "/upload.png",
         categorias: {
           create: jogo.categorias.map((categoriaId) => ({
             categoria: {

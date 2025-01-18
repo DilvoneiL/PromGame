@@ -46,6 +46,7 @@ model Jogo {
   ano         DateTime
   publisher   String
   descricao   String
+  imagemUrl   String  @default("/upload.png")
   categorias  JogosCategorias[]// Relacionamento com Categoria
   ofertas Oferta[]  @relation("JogoOfertas") // Relacionamento com Oferta
 }

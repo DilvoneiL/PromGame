@@ -6,6 +6,7 @@ import useSWR from 'swr';
 import { handleEditarJogo, handleObterJogo } from '@/app/(entidades)/jogo/action';
 import styles from '@/app/(entidades)/entidades.module.css';
 import { useRouter } from 'next/navigation';
+import UploadImagem from '@/app/ui/uploadImg';
 
 interface Categoria {
   id: string;
@@ -19,13 +20,14 @@ interface Jogo {
   ano: Date;
   publisher: string;
   descricao: string;
+  img: string;
   categorias: string[];
 }
 
 function EditarJogo() {
   const params = useParams();
   const jogoId = Array.isArray(params?.id) ? params.id[0] : params?.id;
-
+  const [imagemUrl, setImagemUrl] = useState('')
   const { data: categorias, error: categoriasError } = useSWR<Categoria[]>('/api/categoria/listar', fetcher);
   const [jogo, setJogo] = useState<Jogo | null>(null);
   const [nome, setNome] = useState('');
@@ -47,12 +49,14 @@ function EditarJogo() {
               ano: new Date(jogoData.ano),
               publisher: jogoData.publisher,
               descricao: jogoData.descricao,
+              img: jogoData.imagemUrl || '/upload.png',
               categorias: jogoData.categorias,
             });
             setNome(jogoData.nome);
             setAno(new Date(jogoData.ano).toISOString().split('T')[0]);
             setPublisher(jogoData.publisher);
             setDescricao(jogoData.descricao);
+            setImagemUrl(jogoData.imagemUrl || '/upload.png');
             setCategoriasSelecionadas(jogoData.categorias);
           }
         } catch (error) {
@@ -87,6 +91,7 @@ function EditarJogo() {
       ano: new Date(ano),
       publisher,
       descricao,
+      imagemUrl, 
       categorias: categoriasFiltradas,
     };
 
@@ -109,7 +114,21 @@ function EditarJogo() {
       <form className={styles['AdcJogo-form-container']} onSubmit={handleSubmit}>
         <h1 className={styles['AdcJogo-title']}>Editar Jogo</h1>
 
+        
         <div className={styles['AdcJogo-form-group']}>
+          <label>Imagem do Jogo:</label>
+          {/* Exibe a imagem atual */}
+          <img
+            src={imagemUrl}
+            alt="Imagem do jogo"
+            className={styles['AdcJogo-image-preview']}
+          />
+          {/* Componente de Upload de Imagem */}
+          <UploadImagem onImageChange={setImagemUrl} />
+        </div>
+        
+        <div className={styles['AdcJogo-form-group']}>
+
           <label>Nome do Jogo:</label>
           <input
             type="text"
