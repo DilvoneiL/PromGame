@@ -400,7 +400,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin-bottom: 20px;
+}
+
+.AdcJogo-upload-preview {
+  width: 400px; /* Garante que a imagem não exceda a largura do contêiner */
+  height: 300px; /* Define uma altura máxima */
+  object-fit: cover; /* Corta a imagem para caber sem distorção */
+  border-radius: 8px; /* Adiciona bordas arredondadas */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra sutil */
+}
+
+.AdcJogo-image-preview {
+  width: 500px; /* Garante que a imagem não exceda a largura do contêiner */
+  height: 300px; /* Define uma altura máxima */
+  object-fit: fill; /* Corta a imagem para caber sem distorção */
+  border-radius: 8px; /* Adiciona bordas arredondadas */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra sutil */
 }
 
 .AdcJogo-upload-icon {

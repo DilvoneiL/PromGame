@@ -116,13 +116,14 @@ function EditarJogo() {
 
         
         <div className={styles['AdcJogo-form-group']}>
-          <label>Imagem do Jogo:</label>
+          <label>
           {/* Exibe a imagem atual */}
-          <img
+          {/* <img
             src={imagemUrl}
             alt="Imagem do jogo"
             className={styles['AdcJogo-image-preview']}
-          />
+          /> */}
+          </label>
           {/* Componente de Upload de Imagem */}
           <UploadImagem onImageChange={setImagemUrl} />
         </div>
