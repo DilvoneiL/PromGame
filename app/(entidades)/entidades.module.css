@@ -445,6 +445,8 @@
 }
 
 /* css da pagina para visualizar o jogo */
+
+
 .VisualizarEditarJogo-container {
   padding: 20px;
   background-color: #1e1e1e;
@@ -488,39 +490,12 @@
   margin-right: 5px;
 }
 
-.VisualizarEditarJogo-plataformas {
-  background-color: #2e2e2e;
-  padding: 10px;
-  border-radius: 10px;
-}
 
-.VisualizarEditarJogo-plataforma {
+.VisualizarEditarJogo-informacoes {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #333;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-.VisualizarEditarJogo-plataforma-info input {
-  background-color: #444;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  color: #fff;
-  margin-right: 5px;
-}
-
-.VisualizarEditarJogo-plataforma-acoes button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  margin-right: 5px;
-  cursor: pointer;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1100px;
 }
 
 .VisualizarEditarJogo-descricao {
@@ -538,13 +513,51 @@
 }
 
 
-.VisualizarEditarJogo-informacoes {
-  display: flex;
-  flex-direction: column;
+
+
+
+/* ofertas */
+.VisualizarEditarJogo-plataformas {
+  background-color: #2e2e2e;
+  padding: 10px;
+  border-radius: 10px;
   width: 100%;
-  max-width: 1100px;
 }
 
+.VisualizarEditarJogo-plataforma {
+  display: flex;
+  justify-content: space-between; /* Espaço máximo entre os elementos */
+  align-items: center; /* Alinha os itens verticalmente */
+  background-color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  width: 99%; /* Garante que o container ocupe toda a largura disponível */
+}
+
+.VisualizarEditarJogo-link {
+  color: #1e90ff; /* Cor do link */
+  text-decoration: none;
+  font-weight: 500; /* Peso intermediário */
+  flex-grow: 1; /* Faz o link ocupar todo o espaço possível */
+}
+
+.VisualizarEditarJogo-link:hover {
+  text-decoration: underline; /* Destaca o link ao passar o mouse */
+}
+
+.VisualizarEditarJogo-preco {
+  font-size: 16px; /* Tamanho do texto */
+  font-weight: bold; /* Destaca o preço */
+  color: #fff; /* Branco para contraste */
+  text-align: right; /* Alinha o texto dentro da área do preço */
+  margin-left: auto; /* Empurra o preço para a extrema direita */
+}
+
+
+/* ofertas */
+
+/* não sei de onde */
 .VisualizarEditarJogo-dropdownButton {
   background-color: #007bff;
   color: #fff;
@@ -595,3 +608,4 @@
 .VisualizarEditarJogo-editar {
   background-color: #ffc107;
 }
+/* não sei de onde */

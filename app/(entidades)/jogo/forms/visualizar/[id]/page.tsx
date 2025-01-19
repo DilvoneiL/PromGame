@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import useSWR from 'swr';
 import styles from '@/app/(entidades)/entidades.module.css';
+import { useRouter } from "next/navigation";
 
 interface Categoria {
   id: string;
@@ -14,7 +15,7 @@ interface Categoria {
 interface Oferta {
   id: string;
   plataforma: string;
-  url: string;
+  endereco: string;
   preco: string;
 }
 
@@ -30,7 +31,7 @@ interface Jogo {
 function VisualizarEditarJogo() {
   const params = useParams();
   const jogoId = Array.isArray(params?.id) ? params.id[0] : params?.id;
-
+  const router = useRouter();
   const { data: categorias, error: categoriasError } = useSWR<Categoria[]>('/api/categoria/listar', fetcher);
   const [jogo, setJogo] = useState<Jogo | null>(null);
   const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<string[]>([]);
@@ -52,6 +53,9 @@ function VisualizarEditarJogo() {
               ofertas: jogoData.ofertas || [],
             });
             setCategoriasSelecionadas(jogoData.categorias);
+
+            // Log detalhado do jogo no console
+            console.log('Jogo carregado no frontend:', JSON.stringify(jogoData, null, 2));
           }
         } catch (error) {
           console.error('Erro ao obter jogo:', error);
@@ -63,7 +67,7 @@ function VisualizarEditarJogo() {
 
   if (categoriasError) return <div>Erro ao carregar categorias.</div>;
   if (!categorias || !jogo) return <div>Carregando...</div>;
-
+  
   const handleSelecionarCategoria = async (id: string) => {
     const jaSelecionada = categoriasSelecionadas.includes(id);
     const atualizadas = jaSelecionada
@@ -88,39 +92,20 @@ function VisualizarEditarJogo() {
     }
   };
 
-  const handleAdicionarOferta = async () => {
-    const novaOferta = {
-      id: Date.now().toString(),
-      plataforma: 'Nova Plataforma',
-      url: '',
-      preco: 'R$0,00',
-    };
-    const ofertasAtualizadas = [...jogo.ofertas, novaOferta];
-    setJogo({ ...jogo, ofertas: ofertasAtualizadas });
-  };
 
-  const handleEditarOferta = (id: string, campo: string, valor: string) => {
-    if (jogo) {
-      const ofertasAtualizadas = jogo.ofertas.map((oferta) =>
-        oferta.id === id ? { ...oferta, [campo]: valor } : oferta
-      );
-      setJogo({ ...jogo, ofertas: ofertasAtualizadas });
-    }
-  };
 
-  const handleExcluirOferta = (id: string) => {
-    if (jogo) {
-      const ofertasAtualizadas = jogo.ofertas.filter((oferta) => oferta.id !== id);
-      setJogo({ ...jogo, ofertas: ofertasAtualizadas });
-    }
+  const handleAdicionarOferta = () => {
+    // Redireciona para a página de Gerenciar Ofertas
+    router.push("/oferta/");
   };
+  
 
   return (
     <div className={styles['VisualizarEditarJogo-container']}>
       {/* Detalhes do Jogo */}
       <div className={styles['VisualizarEditarJogo-detalhes']}>
         <img
-          src={jogo.imagemUrl || "https://img.hype.games/cdn/209a330a-50f4-48d1-9db7-7485e6a81d87cover.jpg"}
+          src={jogo.imagemUrl}
           alt={jogo.titulo}
           className={styles['VisualizarEditarJogo-imagem']}
         />
@@ -161,43 +146,24 @@ function VisualizarEditarJogo() {
           className={styles['VisualizarEditarJogo-adicionar']}
           onClick={handleAdicionarOferta}
         >
-          +
+          Gerenciar Ofertas
         </button>
         {jogo.ofertas.map((oferta) => (
           <div key={oferta.id} className={styles['VisualizarEditarJogo-plataforma']}>
-            <div className={styles['VisualizarEditarJogo-plataforma-info']}>
-              <input
-                type="text"
-                value={oferta.plataforma}
-                onChange={(e) =>
-                  handleEditarOferta(oferta.id, 'plataforma', e.target.value)
-                }
-                className={styles['VisualizarEditarJogo-input']}
-              />
-              <input
-                type="text"
-                value={oferta.url}
-                onChange={(e) =>
-                  handleEditarOferta(oferta.id, 'url', e.target.value)
-                }
-                className={styles['VisualizarEditarJogo-input']}
-              />
-              <input
-                type="text"
-                value={oferta.preco}
-                onChange={(e) =>
-                  handleEditarOferta(oferta.id, 'preco', e.target.value)
-                }
-                className={styles['VisualizarEditarJogo-input']}
-              />
-            </div>
-            <div className={styles['VisualizarEditarJogo-plataforma-acoes']}>
-              <button
-                onClick={() => handleExcluirOferta(oferta.id)}
-                className={styles['VisualizarEditarJogo-excluir']}
+           
+           <div key={oferta.id} className={styles['VisualizarEditarJogo-plataforma']}>
+              <a
+                href={oferta.endereco}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles['VisualizarEditarJogo-link']}
               >
-                Excluir
-              </button>
+                {oferta.endereco || 'Clique para acessar'}
+              </a>
+
+              <span className={styles['VisualizarEditarJogo-preco']}>
+                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(oferta.preco))}
+              </span>
             </div>
           </div>
         ))}

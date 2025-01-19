@@ -7,7 +7,7 @@ import Jogo from '@/app/(entidades)/jogo/jogo';
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
     // Obtém o ID do jogo da URL
-    const { id } = params;
+    const { id } = await params;
 
     // Chama a função para obter o jogo pelo ID
     const jogo = await obterJogoPorId(id);
@@ -15,6 +15,10 @@ export async function GET(request: Request, { params }: { params: { id: string }
     if (!jogo) {
       return NextResponse.json({ message: 'Jogo não encontrado' }, { status: 404 });
     }
+
+
+    // Log detalhado do retorno
+    console.log('Retorno completo do jogo:', JSON.stringify(jogo, null, 2));
 
     // Retorna os dados do jogo em formato JSON
     return NextResponse.json(jogo, { status: 200 });
