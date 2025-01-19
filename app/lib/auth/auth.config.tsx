@@ -1,7 +1,7 @@
 import credentials from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken"; // Importa o jsonwebtoken para criar o JWT
-const prisma = new PrismaClient();
+
 export default {
 	providers: [
 		credentials({
@@ -69,8 +69,7 @@ export default {
       session.user.id = token.id;
       session.user.role = token.role;
       session.user.name = token.name;
-      session.user.email = token.email;
-      session.token = token.signedToken;
+      session.token = token; // Retorna o token completo na sessão, se precisar
       console.log("Session:", session);
       
       return session;
