@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Tabela, { obterSelecionadas } from "@/app/ui/tabela";
 import PainelCRUD from "@/app/ui/painelcrud";
+import Filtro from "@/app/ui/seach"; // Importando o componente de filtro
 import { handleRemoverOferta, listarOfertasSWR } from "./action";
 
 export default function Ofertas() {
@@ -14,9 +15,8 @@ export default function Ofertas() {
   // Obter dados das ofertas com SWR
   const { data, error, isLoading } = useSWR("/api/ofertas/listar", listarOfertasSWR);
 
-  // Estados para pesquisa e filtragem
-  const [searchValue, setSearchValue] = useState(""); // Valor do input de pesquisa
-  const [filteredLinhas, setFilteredLinhas] = useState<string[][]>([]); // Linhas filtradas
+  // Estado para as linhas exibidas na tabela
+  const [linhasExibidas, setLinhasExibidas] = useState<string[][]>([]);
 
   if (isLoading) {
     return (
@@ -44,37 +44,30 @@ export default function Ofertas() {
   const linhas = ofertas.map((oferta) => [
     oferta.id || "Sem ID", // ID da oferta
     oferta.endereco || "Sem endereço", // Endereço da oferta
-    new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(oferta.preco || 0), // Preço formatado em BRL
-    oferta.site?.nome || "Sem site", // Nome do site associado
+    oferta.preco
+      ? (
+        <span style={{ fontWeight: "bold", color: "#39ff14" }}>
+          {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(oferta.preco)}
+        </span>
+      )
+      : "Sem preço", // Preço formatado com destaque
+    oferta.site?.nome || "Sem site", // Nome do site (sem link clicável)
     oferta.jogo?.nome || "Sem jogo", // Nome do jogo associado
   ]);
 
-  // Função para pesquisar nas linhas
-  const handleSearch = (value: string) => {
-    setSearchValue(value); // Atualiza o estado da pesquisa
-    const filtered = linhas.filter((linha) =>
-      linha.some((coluna) =>
-        coluna.toLowerCase().includes(value.toLowerCase())
-      )
-    );
-    setFilteredLinhas(filtered); // Atualiza as linhas filtradas
-  };
-
-  // Define se usa as linhas filtradas ou todas
-  const linhasExibidas = searchValue ? filteredLinhas : linhas;
+  // Função de filtro para buscar por endereço
+  const filtroPorEndereco = (linha: string[], valor: string) =>
+    linha[1]?.toLowerCase().includes(valor.toLowerCase()); // Filtra pela coluna "Endereço"
 
   return (
     <div className={styles.entidade}>
-      {/* Input de Pesquisa */}
-      <div className={styles.searchPage}>
-        <input
-          className={styles.searchPage}
-          type="text"
-          placeholder="Pesquisar ofertas"
-          value={searchValue}
-          onChange={(e) => handleSearch(e.target.value)} // Atualiza a pesquisa ao digitar
-        />
-      </div>
+      {/* Filtro */}
+      <Filtro
+        placeholder="Pesquisar por endereço"
+        dados={linhas}
+        filtro={filtroPorEndereco}
+        onFiltrar={setLinhasExibidas}
+      />
 
       {/* Painel CRUD */}
       <PainelCRUD
@@ -86,8 +79,7 @@ export default function Ofertas() {
       />
 
       {/* Tabela com ofertas */}
-      <Tabela cabecalho={cabecalho} linhas={linhasExibidas} />
-      <p>{linhas}</p>
+      <Tabela cabecalho={cabecalho} linhas={linhasExibidas.length > 0 ? linhasExibidas : linhas} />
     </div>
   );
 }
