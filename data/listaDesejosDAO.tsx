@@ -94,18 +94,12 @@ export async function obterTodasListasDesejos(adminId: string) {
   }
 }
 
-// Gerar relatório dos jogos mais adicionados às listas de desejos (Apenas para Administradores)
-export async function gerarRelatorioJogosMaisDesejados(adminId: string) {
+
+
+// Gerar relatório dos jogos mais adicionados às listas de desejos (Acesso aberto)
+export async function gerarRelatorioJogosMaisDesejados() {
   try {
-    // Verifica se o usuário é administrador
-    const admin = await prisma.user.findUnique({
-      where: { id: adminId },
-    });
-
-    if (!admin || admin.role !== "ADMIN") {
-      throw new Error("Acesso negado. Apenas administradores podem gerar relatórios.");
-    }
-
+    // Agrupa os jogos mais desejados com a contagem de listas de desejos
     const jogosMaisDesejados = await prisma.listaDesejos.groupBy({
       by: ["jogoId"],
       _count: { jogoId: true },
@@ -113,17 +107,39 @@ export async function gerarRelatorioJogosMaisDesejados(adminId: string) {
       take: 10, // Retorna os 10 jogos mais desejados
     });
 
+    // Buscar detalhes completos dos jogos
     const jogosDetalhes = await Promise.all(
       jogosMaisDesejados.map(async (jogo) => {
         const detalhes = await prisma.jogo.findUnique({
           where: { id: jogo.jogoId },
+          include: {
+            categorias: {
+              include: { categoria: true },
+            },
+            ofertas: true,
+          },
         });
+
         return {
+          id: detalhes?.id,
           nome: detalhes?.nome,
-          quantidade: jogo._count.jogoId,
+          descricao: detalhes?.descricao,
+          ano: detalhes?.ano,
+          publisher: detalhes?.publisher,
+          imagemUrl: detalhes?.imagemUrl || "/upload.png",
+          categorias: detalhes?.categorias.map((c) => c.categoria.nome) || [],
+          ofertas: detalhes?.ofertas.map((oferta) => ({
+            id: oferta.id,
+            endereco: oferta.endereco,
+            preco: oferta.preco,
+          })) || [],
+          quantidadeDesejos: jogo._count.jogoId, // Número de vezes que apareceu na lista de desejos
         };
       })
     );
+
+    // Ordenando os jogos corretamente do mais desejado para o menos desejado
+    jogosDetalhes.sort((a, b) => b.quantidadeDesejos - a.quantidadeDesejos);
 
     return jogosDetalhes;
   } catch (error) {
@@ -131,3 +147,4 @@ export async function gerarRelatorioJogosMaisDesejados(adminId: string) {
     throw new Error("Erro ao gerar relatório.");
   }
 }
+

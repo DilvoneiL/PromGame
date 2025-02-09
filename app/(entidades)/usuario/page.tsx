@@ -6,6 +6,14 @@ import Link from "next/link"; // Para links de navegação
 import { signOut, getSession, useSession } from "next-auth/react"; // Para realizar o logout
 import Filtro from "@/app/ui/seach";
 
+interface RelatorioDesejados {
+  id: string;
+  nome: string;
+  descricao: string;
+  imagemUrl: string;
+  quantidadeDesejos: number;
+}
+
 export default function Usuario() {
   const { data: session, status } = useSession(); // Hook para sessão
   const [userData, setUserData] = useState<{ name: string; email: string }>({ name: "", email: "" });
@@ -15,6 +23,9 @@ export default function Usuario() {
   const [searchValue, setSearchValue] = useState<string>(""); // Valor de pesquisa
   const [error, setError] = useState<string | null>(null); // Estado para mensagens de erro
   const [editingUserId, setEditingUserId] = useState<string | null>(null); // Estado para o usuário em modo de edição
+  const [relatorioDesejados, setRelatorioDesejados] = useState<RelatorioDesejados[]>([]);
+  const [isLoadingRelatorio, setIsLoadingRelatorio] = useState<boolean>(true);
+  const [errorRelatorio, setErrorRelatorio] = useState<string | null>(null);
   const [isEditingProfile, setIsEditingProfile] = useState<boolean>(false); // Para controle de edição do perfil
   const [editedUser, setEditedUser] = useState<{ name: string; email: string }>({
 
@@ -56,10 +67,26 @@ export default function Usuario() {
     }
   };
   
+  const fetchRelatorioDesejados = async () => {
+    try {
+      const response = await fetch(`api/listaDesejos/relatorio`);
+      if (!response.ok) throw new Error("Erro ao buscar relatório.");
+
+      const data = await response.json();
+      setRelatorioDesejados(data);
+    } catch (error) {
+      console.error("Erro ao buscar relatório:", error);
+      setErrorRelatorio("Erro ao carregar relatório.");
+    } finally {
+      setIsLoadingRelatorio(false);
+    }
+  };
+
   // Chama a função para buscar usuários ao inicializar
   useEffect(() => {
     if (role === "ADMIN") {
       fetchUsuarios();
+      fetchRelatorioDesejados();
     }
   }, [role]); // Dependência: executa sempre que o `role` mudar
 
@@ -138,17 +165,8 @@ export default function Usuario() {
     }
   };
 
-// // Função para filtrar os usuários com base no valor da pesquisa
-// const handleSearch = (value: string) => {
-//   setSearchValue(value); // Atualiza o valor de pesquisa
-//   const filtered = usuarios.filter((usuario) =>
-//     usuario.name.toLowerCase().includes(value.toLowerCase()) || // Filtra pelo nome
-//     usuario.email.toLowerCase().includes(value.toLowerCase()) // Ou pelo email
-//   );
-//   setFilteredUsuarios(filtered); // Atualiza a lista de usuários filtrados
-// };
 
-  // Aguardando a sessão carregar
+
   if (status === "loading") {
     return <div className={styles.loading}>Carregando...</div>;
   }
@@ -178,6 +196,7 @@ export default function Usuario() {
       {/* Conteúdo para administradores */}
       {role === "ADMIN" && (
         <div className={styles.adminPanel}>
+
           <h2>Bem-vindo, Administrador!</h2>
           <p>Aqui você pode gerenciar todos os usuários.</p>
              {/* Componente Filtro */}
@@ -272,6 +291,30 @@ export default function Usuario() {
               )}
             </div>
           )}
+
+          {/* Relatório de Jogos Mais Desejados */}
+          <div className={styles.reportSection}>
+            <h3>Jogos Mais Desejados</h3>
+            {isLoadingRelatorio ? (
+              <p>Carregando relatório...</p>
+            ) : errorRelatorio ? (
+              <p className={styles.error}>{errorRelatorio}</p>
+            ) : (
+              <ul className={styles.reportList}>
+                {relatorioDesejados.map((jogo, index) => (
+                  <li key={index} className={styles.reportItem}>
+                    <img src={jogo.imagemUrl} alt={jogo.nome} className={styles.jogoImage} />
+                    <div>
+                      <h3>{jogo.nome}</h3>
+                      <p>{jogo.descricao}</p>
+                      <p><strong>{jogo.quantidadeDesejos}</strong> listas de desejos</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
         </div>
       )}
 
