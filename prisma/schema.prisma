@@ -15,71 +15,77 @@ model Cliente {
   senha  String?
 }
 
+// Modelo Site
 model Site {
-  id       String @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
+  id       String @id @map("_id") @default(auto()) @db.ObjectId
   nome     String
   endereco String
   ofertas   Oferta[] // Relacionamento 1:N com Oferta
 }
 
+// Modelo Categoria
 model Categoria {
-  id        String      @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
+  id        String      @id @map("_id") @default(auto()) @db.ObjectId
   nome      String
   descricao String
   jogos     JogosCategorias[] // Relacionamento com Jogo
 }
 
+// Modelo Oferta
 model Oferta {
-  id        String @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
-  endereco  String  // URL da oferta
-  preco     Float   // Preço da oferta
-  siteId    String   @db.ObjectId // Chave estrangeira para Site, deve ser ObjectId
-  site      Site    @relation(fields: [siteId], references: [id]) // Relaciona com Site
-  jogoId String @db.ObjectId // Chave estrangeira para Jogo, deve ser ObjectId
-  jogo Jogo @relation("JogoOfertas", fields:  [jogoId], references: [id], onDelete: Cascade) // Relaciona com Jogo com delete em cascata
+  id        String @id @map("_id") @default(auto()) @db.ObjectId
+  endereco  String
+  preco     Float
+  siteId    String   @db.ObjectId
+  site      Site    @relation(fields: [siteId], references: [id])
+  jogoId    String   @db.ObjectId
+  jogo      Jogo    @relation("JogoOfertas", fields: [jogoId], references: [id], onDelete: Cascade)
 }
 
-
+// Modelo Jogo
 model Jogo {
-  id          String           @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
+  id          String  @id @map("_id") @default(auto()) @db.ObjectId
   nome        String
   ano         DateTime
   publisher   String
   descricao   String
   imagemUrl   String  @default("/upload.png")
-  categorias  JogosCategorias[]// Relacionamento com Categoria
-  ofertas Oferta[]  @relation("JogoOfertas") // Relacionamento com Oferta
+  categorias  JogosCategorias[]
+  ofertas     Oferta[]  @relation("JogoOfertas")
+  listaDesejos ListaDesejos[]
 }
 
+// Modelo JogosCategorias
 model JogosCategorias {
-  id           String       @id @map("_id") @default(auto()) @db.ObjectId // Usa ObjectId para MongoDB
-  jogoId       String       @db.ObjectId // Campo de referência ao ID do jogo
-  categoriaId  String?      @db.ObjectId // Campo de referência ao ID da categoria
-  jogo         Jogo         @relation(fields: [jogoId], references: [id], onDelete: Cascade) // Aplica cascata de exclusão aqui para as categorias
-  categoria    Categoria?    @relation(fields: [categoriaId], references: [id])
+  id           String       @id @map("_id") @default(auto()) @db.ObjectId
+  jogoId       String       @db.ObjectId
+  categoriaId  String?      @db.ObjectId
+  jogo         Jogo         @relation(fields: [jogoId], references: [id], onDelete: Cascade)
+  categoria    Categoria?   @relation(fields: [categoriaId], references: [id])
 }
 
-
-// Tabelas do Next Auth
+// Modelo User (NextAuth)
 model User {
-  id            String          @id @default(cuid()) @map("_id")
+  id            String  @id @map("_id") @default(auto()) @db.ObjectId
   name          String?
-  email         String?         @unique
+  email         String?  @unique
   password      String?
   emailVerified DateTime?
   image         String?
-  role          String          @default("NORMAL") // role agora é uma string
+  role          String   @default("NORMAL")
   accounts      Account[]
   sessions      Session[]
   Authenticator Authenticator[]
+  listaDesejos  ListaDesejos[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+// Modelo Account (NextAuth)
 model Account {
   id                String  @id @default(cuid()) @map("_id")
-  userId            String
+  userId            String  @db.ObjectId
   type              String
   provider          String
   providerAccountId String
@@ -99,10 +105,11 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+// Modelo Session (NextAuth)
 model Session {
   id           String   @id @default(cuid()) @map("_id")
   sessionToken String   @unique
-  userId       String
+  userId       String   @db.ObjectId
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -110,6 +117,7 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
+// Modelo VerificationToken (NextAuth)
 model VerificationToken {
   id         String   @id @default(cuid()) @map("_id")
   identifier String
@@ -119,10 +127,11 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// Modelo Authenticator (NextAuth)
 model Authenticator {
   id                   String  @id @default(cuid()) @map("_id")
   credentialID         String  @unique
-  userId               String
+  userId               String  @db.ObjectId
   providerAccountId    String
   credentialPublicKey  String
   counter              Int
@@ -133,4 +142,14 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, credentialID])
+}
+
+// Modelo ListaDesejos (Lista de Desejos dos Usuários)
+model ListaDesejos {
+  id       String  @id @map("_id") @default(auto()) @db.ObjectId
+  userId   String  @db.ObjectId
+  jogoId   String  @db.ObjectId
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jogo     Jogo    @relation(fields: [jogoId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }

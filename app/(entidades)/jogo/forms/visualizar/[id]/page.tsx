@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import useSWR from 'swr';
 import styles from '@/app/(entidades)/entidades.module.css';
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface Categoria {
   id: string;
@@ -32,10 +33,10 @@ function VisualizarEditarJogo() {
   const params = useParams();
   const jogoId = Array.isArray(params?.id) ? params.id[0] : params?.id;
   const router = useRouter();
-  const { data: categorias, error: categoriasError } = useSWR<Categoria[]>('/api/categoria/listar', fetcher);
+  const { data: session } = useSession();
   const [jogo, setJogo] = useState<Jogo | null>(null);
-  const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<string[]>([]);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // Estado do Dropdown
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [naListaDesejos, setNaListaDesejos] = useState<boolean>(false); // Verifica se o jogo já está na lista
 
   useEffect(() => {
     async function fetchJogo() {
@@ -49,12 +50,10 @@ function VisualizarEditarJogo() {
               titulo: jogoData.nome,
               descricao: jogoData.descricao,
               imagemUrl: jogoData.imagemUrl,
-              categorias: jogoData.categorias,
+              categorias: jogoData.categorias || [],
               ofertas: jogoData.ofertas || [],
             });
-            setCategoriasSelecionadas(jogoData.categorias);
 
-            // Log detalhado do jogo no console
             console.log('Jogo carregado no frontend:', JSON.stringify(jogoData, null, 2));
           }
         } catch (error) {
@@ -62,46 +61,62 @@ function VisualizarEditarJogo() {
         }
       }
     }
+
+    async function verificarListaDesejos() {
+      if (!session?.user?.id || !jogoId) return;
+
+      try {
+        const response = await fetch(`/api/listaDesejos/usuario?userId=${session.user.id}`);
+        if (!response.ok) throw new Error("Erro ao buscar lista de desejos");
+
+        const data = await response.json();
+        const jogoNaLista = data.lista.some((item: any) => item.idJogo === jogoId);
+        setNaListaDesejos(jogoNaLista);
+      } catch (error) {
+        console.error("Erro ao verificar lista de desejos:", error);
+      }
+    }
+
     fetchJogo();
-  }, [jogoId]);
+    verificarListaDesejos();
+  }, [jogoId, session]);
 
-  if (categoriasError) return <div>Erro ao carregar categorias.</div>;
-  if (!categorias || !jogo) return <div>Carregando...</div>;
-  
-  const handleSelecionarCategoria = async (id: string) => {
-    const jaSelecionada = categoriasSelecionadas.includes(id);
-    const atualizadas = jaSelecionada
-      ? categoriasSelecionadas.filter((catId) => catId !== id)
-      : [...categoriasSelecionadas, id];
+  if (!jogo) return <div>Carregando...</div>;
 
-    setCategoriasSelecionadas(atualizadas);
+  const handleListaDesejos = async () => {
+    if (!session?.user?.id || !jogoId) {
+      alert("Usuário não autenticado ou jogo inválido.");
+      return;
+    }
 
+    setIsProcessing(true);
     try {
-      const response = await fetch(`/api/jogo/${jogoId}/categorias`, {
-        method: 'PATCH',
+      const url = naListaDesejos ? '/api/listaDesejos/remover' : '/api/listaDesejos/adicionar';
+      const method = naListaDesejos ? 'DELETE' : 'POST';
+
+      const response = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ categorias: atualizadas }),
+        body: JSON.stringify({ userId: session.user.id, jogoId }),
       });
 
       if (!response.ok) {
-        throw new Error('Erro ao atualizar categorias.');
+        throw new Error(`Erro ao ${naListaDesejos ? "remover" : "adicionar"} jogo à lista de desejos.`);
       }
+
+      setNaListaDesejos(!naListaDesejos);
+      alert(`Jogo ${naListaDesejos ? "removido" : "adicionado"} da lista de desejos!`);
     } catch (error) {
-      console.error('Erro ao atualizar categorias:', error);
-      alert('Não foi possível atualizar as categorias.');
+      console.error("Erro ao atualizar lista de desejos:", error);
+      alert(`Não foi possível ${naListaDesejos ? "remover" : "adicionar"} o jogo.`);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
-
-
-  const handleAdicionarOferta = () => {
-    // Redireciona para a página de Gerenciar Ofertas
-    router.push("/oferta/");
-  };
-  
-
   return (
     <div className={styles['VisualizarEditarJogo-container']}>
+
       {/* Detalhes do Jogo */}
       <div className={styles['VisualizarEditarJogo-detalhes']}>
         <img
@@ -115,59 +130,59 @@ function VisualizarEditarJogo() {
             <p>{jogo.descricao}</p>
           </div>
 
-          {/* Botão Dropdown de Categorias */}
+          {/* 📌 Botão para Adicionar/Remover da Lista de Desejos */}
+          <button
+            className={styles['VisualizarEditarJogo-favoritar']}
+            onClick={handleListaDesejos}
+            disabled={isProcessing}
+          >
+            {isProcessing ? "Processando..." : naListaDesejos ? "Remover da Lista de Desejos" : "Adicionar à Lista de Desejos"}
+          </button>
+
+          {/* 📌 Exibir Categorias */}
           <div className={styles['VisualizarEditarJogo-categorias']}>
-            <button
-              className={styles['VisualizarEditarJogo-dropdownButton']}
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-            >
-              Adicionar ▼
-            </button>
-            {dropdownOpen && (
-              <div className={styles['VisualizarEditarJogo-dropdownMenu']}>
-                {categorias.map((categoria) => (
-                  <div
-                    key={categoria.id}
-                    className={styles['VisualizarEditarJogo-dropdownItem']}
-                    onClick={() => handleSelecionarCategoria(categoria.id)}
-                  >
-                    {categoriasSelecionadas.includes(categoria.id) ? "✅" : ""} {categoria.nome}
-                  </div>
-                ))}
-              </div>
+            <h2>Categorias</h2>
+            {jogo.categorias.length === 0 ? (
+              <p>Nenhuma categoria associada.</p>
+            ) : (
+              jogo.categorias.map((categoria, index) => ( // 🔥 Agora renderiza corretamente
+                <span key={index} className={styles['VisualizarEditarJogo-categoriaItem']}>
+                  {categoria}
+                </span>
+              ))
             )}
           </div>
         </div>
       </div>
 
-      {/* Gerenciar Ofertas */}
+      {/* 📌 Gerenciar Ofertas */}
       <div className={styles['VisualizarEditarJogo-plataformas']}>
+      {session?.user?.role === "ADMIN" && (
         <button
-          className={styles['VisualizarEditarJogo-adicionar']}
-          onClick={handleAdicionarOferta}
+          className={styles['VisualizarEditarJogo-adminButton']}
+          onClick={() => router.push("/oferta/")}
         >
           Gerenciar Ofertas
         </button>
+      )}
+
         {jogo.ofertas.map((oferta) => (
           <div key={oferta.id} className={styles['VisualizarEditarJogo-plataforma']}>
-           
-           <div key={oferta.id} className={styles['VisualizarEditarJogo-plataforma']}>
-              <a
-                href={oferta.endereco}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles['VisualizarEditarJogo-link']}
-              >
-                {oferta.endereco || 'Clique para acessar'}
-              </a>
-
-              <span className={styles['VisualizarEditarJogo-preco']}>
-                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(oferta.preco))}
-              </span>
-            </div>
+            <a
+              href={oferta.endereco}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles['VisualizarEditarJogo-link']}
+            >
+              {oferta.endereco || 'Clique para acessar'}
+            </a>
+            <span className={styles['VisualizarEditarJogo-preco']}>
+              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(oferta.preco))}
+            </span>
           </div>
         ))}
       </div>
+
     </div>
   );
 }

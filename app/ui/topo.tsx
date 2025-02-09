@@ -53,9 +53,9 @@ export default function Topo() {
             <li>
               <Link href="/jogo">Jogos</Link>
             </li>
-            {/* <li>
-              <Link href="/venda">Vendas</Link>
-            </li> */}
+            <li>
+              <Link href="/listaDesejos">Lista de Desejos</Link>
+            </li>
             {/* <li>
               <Image
                 src="/wishlist.png"

@@ -556,6 +556,30 @@
 
 
 /* ofertas */
+.VisualizarEditarJogo-adminButton {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.VisualizarEditarJogo-adminButton:hover {
+  background-color: #fb8c00;
+}
+
+.VisualizarEditarJogo-adminButton:disabled {
+  background-color: #bdbdbd;
+  cursor: not-allowed;
+}
+/* ofertas fim*/
 
 /* não sei de onde */
 .VisualizarEditarJogo-dropdownButton {
@@ -609,3 +633,5 @@
   background-color: #ffc107;
 }
 /* não sei de onde */
+
+/* estilos da lista de desejos */
