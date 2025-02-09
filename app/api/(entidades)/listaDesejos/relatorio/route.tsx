@@ -1,21 +1,19 @@
+import { NextResponse } from "next/server";
 import { gerarRelatorioJogosMaisDesejados } from "@/data/listaDesejosDAO";
-import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "GET") {
-    return res.status(405).json({ error: "Método não permitido." });
-  }
+// Função para `GET`
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const adminId = searchParams.get("adminId");
 
-  const { adminId } = req.query;
-
-  if (!adminId || typeof adminId !== "string") {
-    return res.status(400).json({ error: "Parâmetro adminId ausente ou inválido." });
+  if (!adminId) {
+    return NextResponse.json({ error: "Parâmetro adminId ausente." }, { status: 400 });
   }
 
   try {
     const relatorio = await gerarRelatorioJogosMaisDesejados(adminId);
-    return res.status(200).json({ relatorio });
+    return NextResponse.json({ relatorio }, { status: 200 });
   } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
