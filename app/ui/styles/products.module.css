@@ -32,8 +32,10 @@
   }
   
   .image {
-    width: 100%;
-    border-radius: 8px;
+    width: 150px;  /* Define uma largura fixa */
+    height: 150px; /* Define uma altura fixa */
+    object-fit: cover; /* Garante que a imagem preencha a área sem distorcer */
+    border-radius: 10px; /* Adiciona bordas arredondadas (opcional) */
   }
   
   .name {

@@ -169,3 +169,54 @@ export async function removerOferta(id: string): Promise<boolean> {
 //     throw new Error("Erro ao consultar ofertas no banco de dados.");
 //   }
 // }
+
+// Obter ranking de ofertas de jogos (pegando apenas a melhor oferta por jogo)
+export async function obterRankingOfertas(): Promise<any[]> {
+  try {
+    // Agrupa por jogo e pega a oferta mais barata de cada um
+    const ofertasAgrupadas = await prisma.oferta.groupBy({
+      by: ["jogoId"],
+      _min: { preco: true },
+      orderBy: { _min: { preco: "asc" } }, // Ordena pelo menor preço
+    });
+
+    // Buscar detalhes dos jogos e sites para as ofertas mais baratas
+    const ofertasDetalhadas = await Promise.all(
+      ofertasAgrupadas.map(async (oferta) => {
+        const detalhes = await prisma.oferta.findFirst({
+          where: {
+            jogoId: oferta.jogoId,
+            preco: oferta._min.preco, // Pega a menor oferta do jogo
+          },
+          include: {
+            jogo: true,
+            site: true,
+          },
+        });
+
+        return {
+          posicao: 0, // Será definido depois
+          jogo: {
+            id: detalhes?.jogo?.id || "",
+            nome: detalhes?.jogo?.nome || "Jogo desconhecido",
+            imagemUrl: detalhes?.jogo?.imagemUrl || "/placeholder.png",
+          },
+          oferta: {
+            preco: detalhes?.preco.toFixed(2),
+            endereco: detalhes?.endereco,
+          },
+          site: detalhes?.site?.nome || "Site desconhecido",
+        };
+      })
+    );
+
+    // Ordenar manualmente e definir a posição no ranking
+    ofertasDetalhadas.sort((a, b) => parseFloat(a.oferta.preco) - parseFloat(b.oferta.preco));
+    ofertasDetalhadas.forEach((oferta, index) => (oferta.posicao = index + 1));
+
+    return ofertasDetalhadas;
+  } catch (error) {
+    console.error("Erro ao obter ranking de ofertas:", error);
+    throw new Error("Erro ao gerar ranking de ofertas.");
+  }
+}
