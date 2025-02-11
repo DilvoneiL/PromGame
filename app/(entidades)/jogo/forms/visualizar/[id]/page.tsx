@@ -6,6 +6,8 @@ import useSWR from 'swr';
 import styles from '@/app/(entidades)/entidades.module.css';
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import AvaliacaoJogo from '../../../../../ui/components/avaliarJogos';
+
 
 interface Categoria {
   id: string;
@@ -154,8 +156,9 @@ function VisualizarEditarJogo() {
           </div>
         </div>
       </div>
-
-      {/* 📌 Gerenciar Ofertas */}
+      {/*  Adiciona o componente de avaliação */}
+    <AvaliacaoJogo jogoId={jogo.id} />
+      {/*  Gerenciar Ofertas */}
       <div className={styles['VisualizarEditarJogo-plataformas']}>
       {session?.user?.role === "ADMIN" && (
         <button
