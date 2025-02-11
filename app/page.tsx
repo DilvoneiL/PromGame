@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className={styles.home}>
       <Slider />
-      <Categories />
+      {/* <Categories /> */}
       <Products />
     </div>
   );

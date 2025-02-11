@@ -109,6 +109,7 @@ const AvaliacaoJogo: React.FC<AvaliacaoProps> = ({ jogoId }) => {
               border: 'none',
               cursor: 'pointer',
               backgroundColor: nota === num ? '#ffcc00' : '#ddd',
+              marginBottom:'30px',
             }}
           >
             {num} ⭐

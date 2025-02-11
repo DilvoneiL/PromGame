@@ -634,4 +634,72 @@
 }
 /* não sei de onde */
 
+/* estilos da lista de desejos começo */
+.reportSection {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  margin-top: 200px;
+}
+
+.reportSection h3 {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+.reportList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reportItem {
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.reportItem:hover {
+  transform: scale(1.02);
+}
+
+.jogoImage {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 15px;
+}
+
+.reportItem div {
+  flex: 1;
+}
+
+.reportItem h3 {
+  font-size: 1.2em;
+  margin: 0 0 5px;
+  color: #222;
+}
+
+.reportItem p {
+  margin: 2px 0;
+  color: #555;
+}
+
+.reportItem p strong {
+  color: #000;
+}
 /* estilos da lista de desejos */
