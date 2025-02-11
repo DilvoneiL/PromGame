@@ -53,6 +53,7 @@ model Jogo {
   categorias  JogosCategorias[]
   ofertas     Oferta[]  @relation("JogoOfertas")
   listaDesejos ListaDesejos[]
+  avaliacoes    Avaliacao[]  // Adiciona relação inversa
 }
 
 // Modelo JogosCategorias
@@ -77,6 +78,7 @@ model User {
   sessions      Session[]
   Authenticator Authenticator[]
   listaDesejos  ListaDesejos[]
+  avaliacoes  Avaliacao[]  // Adiciona relação inversa
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -151,5 +153,16 @@ model ListaDesejos {
   jogoId   String  @db.ObjectId
   user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   jogo     Jogo    @relation(fields: [jogoId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+// Modelo Avaliação
+model Avaliacao {
+  id      String  @id @map("_id") @default(auto()) @db.ObjectId
+  jogoId  String  @db.ObjectId
+  jogo    Jogo    @relation(fields: [jogoId], references: [id], onDelete: Cascade)
+  userId  String  @db.ObjectId
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nota    Int     
   createdAt DateTime @default(now())
 }
