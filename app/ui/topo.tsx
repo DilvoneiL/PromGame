@@ -4,8 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../page.module.css"
 import Login from "./login";
+import { useSession } from "next-auth/react";
 
 export default function Topo() {
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "ADMIN"; // Verifica se o usuário é ADMIN
+
   return (
     <div className={styles.topo}>
       {/* Container Principal */}
@@ -36,11 +40,13 @@ export default function Topo() {
         </div>
 
         {/* Direita: Menu */}
-        <div className={styles.right}>
-          <ul className={styles.mainmenu}>
-            <li>
-              <Link href="/">Home</Link>
-            </li>
+    <div className={styles.right}>
+      <ul className={styles.mainmenu}>
+        <li>
+          <Link href="/">Home</Link>
+        </li>
+        {isAdmin && (
+          <>
             <li>
               <Link href="/sites">Sites</Link>
             </li>
@@ -50,12 +56,14 @@ export default function Topo() {
             <li>
               <Link href="/oferta">Ofertas</Link>
             </li>
-            <li>
-              <Link href="/jogo">Jogos</Link>
-            </li>
-            <li>
-              <Link href="/listaDesejos">Lista de Desejos</Link>
-            </li>
+          </>
+        )}
+        <li>
+          <Link href="/jogo">Jogos</Link>
+        </li>
+        <li>
+          <Link href="/listaDesejos">Lista de Desejos</Link>
+        </li>
             {/* <li>
               <Image
                 src="/wishlist.png"
