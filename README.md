@@ -1,12 +1,3 @@
-Perfeito 👍
-Abaixo está o **README reescrito, enxuto e otimizado para recrutador**, **com Visão Geral forte no topo** e **instalação empurrada para o final**, exatamente como você pediu.
-
-👉 Mantive o projeto **profissional**, **claro em 15 segundos**, e ainda **usável por devs**.
-
-Você pode **copiar e colar direto no GitHub**.
-
----
-
 # 🛒 Next.js Loja
 
 **Projeto Full Stack de Loja Virtual desenvolvido com Next.js, Prisma e MongoDB**
