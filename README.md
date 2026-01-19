@@ -149,11 +149,10 @@ http://localhost:3000
 
 ---
 
-## 🧑‍💻 Autor
+## 🧑‍💻 Autores
 
 **Dilvonei Lacerda**
-Desenvolvedor Full Stack Júnior
+**Rafael Cardoso**
+**Lucas Nojiri**
 
 ---
-
-Só falar 👊
