@@ -7,23 +7,26 @@ import SubmitButton from "@/app/ui/submitbutton";
 import Image from "next/image";
 
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { useFormState } from "react-dom";
 
-export default function FormEdtSite({ params }: { params: { id: string } }) {
+export default function FormEdtSite() {
+  const params = useParams<{ id: string }>();
+  const id = params.id;
   const [state, formAction] = useFormState(editarSiteAction, { mensagem: "" });
-  console.log("ID recebido via params:", params.id);
+  console.log("ID recebido via params:", id);
 
   // Fetch data for the selected site
   const { data, error } = useSWR<Site>(
-    `http://localhost:3000/api/sites/obter?id=${params.id}`,
+    `http://localhost:3000/api/sites/obter?id=${id}`,
     (url: string) => fetch(url).then((res) => res.json())
   );
 
   if (error) {
     return (
       <div className={styles.formularioDiv}>
-        <h1>Erro ao buscar site com ID: {params.id}.</h1>
+        <h1>Erro ao buscar site com ID: {id}.</h1>
         <Link href="/sites">
           <button type="button">Voltar</button>
         </Link>

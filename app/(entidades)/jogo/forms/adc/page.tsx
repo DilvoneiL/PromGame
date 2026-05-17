@@ -39,7 +39,9 @@ function AdicionarJogo() {
       publisher,
       descricao,
       categorias: categoriasSelecionadas,
+      ofertas: [],
       imagemUrl, // Inclui a URL da imagem
+      id: "",
     };
 
     try {

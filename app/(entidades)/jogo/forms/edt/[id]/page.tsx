@@ -93,6 +93,7 @@ function EditarJogo() {
       descricao,
       imagemUrl, 
       categorias: categoriasFiltradas,
+      ofertas: [],
     };
 
     try {

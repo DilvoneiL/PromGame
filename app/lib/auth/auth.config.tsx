@@ -1,5 +1,4 @@
 import credentials from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken"; // Importa o jsonwebtoken para criar o JWT
 
 export default {

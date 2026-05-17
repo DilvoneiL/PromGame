@@ -45,12 +45,8 @@ export default function Ofertas() {
     oferta.id || "Sem ID", // ID da oferta
     oferta.endereco || "Sem endereço", // Endereço da oferta
     oferta.preco
-      ? (
-        <span style={{ fontWeight: "bold", color: "#39ff14" }}>
-          {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(oferta.preco)}
-        </span>
-      )
-      : "Sem preço", // Preço formatado com destaque
+      ? new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(oferta.preco)
+      : "Sem preço", // Preço formatado
     oferta.site?.nome || "Sem site", // Nome do site (sem link clicável)
     oferta.jogo?.nome || "Sem jogo", // Nome do jogo associado
   ]);

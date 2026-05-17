@@ -8,6 +8,7 @@ export async function GET() {
     return NextResponse.json(usuarios, { status: 200 });
   } catch (error) {
     console.error("Erro ao obter usuários:", error);
-    return NextResponse.json({ mensagem: "Erro ao obter usuários", erro: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : "Erro desconhecido";
+    return NextResponse.json({ mensagem: "Erro ao obter usuários", erro: message }, { status: 500 });
   }
 }

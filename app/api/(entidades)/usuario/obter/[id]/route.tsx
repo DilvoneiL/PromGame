@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 import { obterUsuarioPorId } from '@/data/usuarioDAO';  // Função que faz a consulta no banco de dados
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const { id } = params;  // Captura o id da URL
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;  // Captura o id da URL
 
   if (!id) {
     return NextResponse.json({ message: 'ID do usuário não fornecido.' }, { status: 400 });

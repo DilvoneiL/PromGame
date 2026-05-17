@@ -1,10 +1,10 @@
 
 export default class Site {
-  id?: string;
+  id: string;
   nome: string;
   endereco: string;
 
-  constructor(nome: string, endereco: string, id?: string) {
+  constructor(nome = "", endereco = "", id = "") {
     this.id = id;
     this.nome = nome;
     this.endereco = endereco;

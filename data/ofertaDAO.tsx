@@ -1,8 +1,13 @@
 import prisma from "@/data/prisma";
 import Oferta from "@/app/(entidades)/oferta/oferta";
 
+type OfertaComRelacoes = Oferta & {
+  site?: { nome: string } | null;
+  jogo?: { nome: string } | null;
+};
+
 // Função para mapear uma oferta do Prisma para a classe Oferta
-function mapearOferta(oferta: any): Oferta {
+function mapearOferta(oferta: OfertaComRelacoes): Oferta {
   return new Oferta(
     oferta.endereco,
     oferta.preco,
@@ -15,19 +20,22 @@ function mapearOferta(oferta: any): Oferta {
 }
 
 // Função para mapear uma instância de `Oferta` para um objeto plano
-function mapearOfertaParaObjeto(oferta: any) {
+function mapearOfertaParaObjeto(oferta: OfertaComRelacoes) {
   return {
-    id: oferta.id,
+    id: oferta.id ?? "",
     endereco: oferta.endereco,
     preco: oferta.preco,
-    site: oferta.site ? { nome: oferta.site.nome } : null,
-    jogo: oferta.jogo ? { nome: oferta.jogo.nome } : null,
+    siteId: oferta.siteId,
+    jogoId: oferta.jogoId,
+    site: oferta.site ? { nome: oferta.site.nome } : undefined,
+    jogo: oferta.jogo ? { nome: oferta.jogo.nome } : undefined,
   };
 }
 
 // Função para obter todas as ofertas
-export async function obterOfertas(): Promise<any[]> {
+export async function obterOfertas(jogoId?: string): Promise<Oferta[]> {
   const ofertas = await prisma.oferta.findMany({
+    where: jogoId ? { jogoId } : undefined,
     include: {
       site: true, // Inclui detalhes do site
       jogo: true, // Inclui detalhes do jogo
@@ -39,7 +47,7 @@ export async function obterOfertas(): Promise<any[]> {
 }
 
 // Função para obter uma oferta por ID
-export async function obterOfertaPorId(id: string): Promise<any | null> {
+export async function obterOfertaPorId(id: string): Promise<Oferta | null> {
   const oferta = await prisma.oferta.findUnique({
     where: { id },
     include: {
@@ -183,10 +191,27 @@ export async function obterRankingOfertas(): Promise<any[]> {
     // Buscar detalhes dos jogos e sites para as ofertas mais baratas
     const ofertasDetalhadas = await Promise.all(
       ofertasAgrupadas.map(async (oferta) => {
+        const precoMinimo = oferta._min.preco;
+        if (precoMinimo === null) {
+          return {
+            posicao: 0,
+            jogo: {
+              id: "",
+              nome: "Jogo desconhecido",
+              imagemUrl: "/placeholder.png",
+            },
+            oferta: {
+              preco: "0.00",
+              endereco: "",
+            },
+            site: "Site desconhecido",
+          };
+        }
+
         const detalhes = await prisma.oferta.findFirst({
           where: {
             jogoId: oferta.jogoId,
-            preco: oferta._min.preco, // Pega a menor oferta do jogo
+            preco: precoMinimo, // Pega a menor oferta do jogo
           },
           include: {
             jogo: true,
@@ -202,8 +227,8 @@ export async function obterRankingOfertas(): Promise<any[]> {
             imagemUrl: detalhes?.jogo?.imagemUrl || "/placeholder.png",
           },
           oferta: {
-            preco: detalhes?.preco.toFixed(2),
-            endereco: detalhes?.endereco,
+            preco: detalhes?.preco.toFixed(2) ?? "0.00",
+            endereco: detalhes?.endereco ?? "",
           },
           site: detalhes?.site?.nome || "Site desconhecido",
         };

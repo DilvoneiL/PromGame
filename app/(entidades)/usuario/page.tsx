@@ -14,6 +14,10 @@ interface RelatorioDesejados {
   quantidadeDesejos: number;
 }
 
+function getErrorMessage(err: unknown) {
+  return err instanceof Error ? err.message : "Erro desconhecido";
+}
+
 export default function Usuario() {
   const { data: session, status } = useSession(); // Hook para sessão
   const [userData, setUserData] = useState<{ name: string; email: string }>({ name: "", email: "" });
@@ -92,6 +96,11 @@ export default function Usuario() {
 
   // Função para editar as informações de um usuário
   const handleEdit = async (id: string) => {
+    if (!id) {
+      alert("ID do usuário não encontrado.");
+      return;
+    }
+
     if (!editedUser.name || !editedUser.email) {
       alert("Nome e email são obrigatórios!");
       return;
@@ -121,12 +130,17 @@ export default function Usuario() {
       }
     } catch (err) {
       console.error("Erro ao editar usuário:", err);
-      alert(`Erro ao editar usuário: ${err.message}`);
+      alert(`Erro ao editar usuário: ${getErrorMessage(err)}`);
     }
   };
 
   // Função para excluir um usuário
   const handleDelete = async (id: string) => {
+    if (!id) {
+      alert("ID do usuário não encontrado.");
+      return;
+    }
+
     const confirmed = window.confirm("Você tem certeza que deseja excluir este usuário?");
     
     if (confirmed) {
@@ -160,7 +174,7 @@ export default function Usuario() {
         }
       } catch (err) {
         console.error("Erro ao excluir usuário:", err);
-        alert(`Erro ao excluir usuário: ${err.message}`);
+        alert(`Erro ao excluir usuário: ${getErrorMessage(err)}`);
       }
     }
   };
@@ -343,7 +357,7 @@ export default function Usuario() {
             onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
           />
         </label>
-        <button onClick={() => handleEdit(session?.user?.id)}>Salvar</button>
+        <button onClick={() => handleEdit(session?.user?.id ?? "")}>Salvar</button>
         <button onClick={() => setIsEditingProfile(false)}>Cancelar</button>
       </div>
     ) : (
@@ -363,7 +377,7 @@ export default function Usuario() {
         >
           Editar
         </button>
-        <button onClick={() => handleDelete(session?.user?.id)}>Excluir</button>
+        <button onClick={() => handleDelete(session?.user?.id ?? "")}>Excluir</button>
       </div>
     )}
   </div>

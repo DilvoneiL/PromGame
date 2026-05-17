@@ -5,29 +5,25 @@ import { adicionarUsuario } from "@/app/(entidades)/usuario/action";
 import { useFormState } from "react-dom";
 import SubmitButton from "@/app/ui/submitbutton";
 import Image from "next/image";
+import { useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function FormAdcUsuario() {
   const router = useRouter(); // Para realizar o redirecionamento no cliente
-  const [state, formAction] = useFormState(adicionarUsuario, {
+  const initialState: { mensagem: string; redirectUrl?: string } = {
     mensagem: "",
+  };
+  const [state, formAction] = useFormState(adicionarUsuario, {
+    ...initialState,
   });
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-
-    // Adicione o campo role como NORMAL diretamente
-    formData.append("role", "NORMAL");
-
-    const response = await formAction(formData);
-
-    if (response?.redirectUrl) {
-      router.push(response.redirectUrl); // Redirecione para a URL especificada
+  useEffect(() => {
+    if (state.redirectUrl) {
+      router.push(state.redirectUrl);
     }
-  };
+  }, [router, state.redirectUrl]);
 
   return (
     <div className={styles.formularioDiv}>
@@ -39,7 +35,8 @@ export default function FormAdcUsuario() {
           style={{ margin : "0px 3px -3px"}} // Alinha a imagem ao lado do texto
         />
         <h2>Cadastrar</h2>
-      <form className={styles.formularioForm} onSubmit={handleSubmit}>
+      <form className={styles.formularioForm} action={formAction}>
+        <input type="hidden" name="role" value="NORMAL" />
         <label>
         <Image
           src="/user.png"

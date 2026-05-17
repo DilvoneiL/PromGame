@@ -1,9 +1,9 @@
 export default class Categoria {
-  id?: string;
+  id: string;
   nome: string;
   descricao: string;
 
-  constructor(nome: string, descricao: string, id?:string) {
+  constructor(nome = "", descricao = "", id = "") {
     this.id = id;
     this.nome = nome;
     this.descricao = descricao;

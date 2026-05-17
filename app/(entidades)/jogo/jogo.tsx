@@ -1,3 +1,5 @@
+import type Oferta from "@/app/(entidades)/oferta/oferta";
+
 export default class Jogo {
   constructor(
     public nome: string, // Nome do jogo
@@ -5,8 +7,8 @@ export default class Jogo {
     public publisher: string, // Empresa responsável
     public descricao: string, // Descrição do jogo
     public categorias: string[], // Lista de nomes das categorias associadas
-    public ofertas?: any[], // Lista de ofertas relacionadas (opcional)
-    public imagemUrl?: string, // URL da imagem do jogo (opcional)
-    public id?: string // ID do jogo (opcional, gerado pelo banco)
+    public ofertas: Oferta[] = [], // Lista de ofertas relacionadas
+    public imagemUrl = "/upload.png", // URL da imagem do jogo
+    public id = "" // ID do jogo
   ) {}
 }

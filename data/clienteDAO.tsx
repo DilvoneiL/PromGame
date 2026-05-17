@@ -1,5 +1,12 @@
-import { Cliente } from "prisma/prisma-client";
+import type { Cliente } from "@prisma/client";
 import prisma from "@/data/prisma";
+
+type ClienteInput = {
+  id?: string;
+  nome: string;
+  email: string;
+  senha?: string | null;
+};
 
 export async function obterClientes(): Promise<Cliente[]> {
   return await prisma.cliente.findMany();
@@ -13,7 +20,7 @@ export async function obterClientePorNome(nome: string): Promise<Cliente> {
     }
   });
 
-  return cliente ?? { id: 0, nome: "", email: "" };
+  return cliente ?? { id: "", nome: "", email: "", senha: null };
 }
 
 export async function obterCliente(id: string): Promise<Cliente> {
@@ -24,7 +31,7 @@ export async function obterCliente(id: string): Promise<Cliente> {
     }
   });
 
-  return cliente ?? { id: 0, nome: "", email: "" };
+  return cliente ?? { id: "", nome: "", email: "", senha: null };
 }
 
 // Função para obter o próximo valor da sequência para IDs incrementais
@@ -39,17 +46,18 @@ async function getNextSequence(name: string): Promise<number> {
           upsert: true, // Cria o documento se ele não existir
         },
       ],
-    });
+    }) as { ok?: number; n?: number; nModified?: number };
 
-    if (result.ok === 1 && result.nModified > 0) {
+    if (result.ok === 1 && ((result.nModified ?? result.n ?? 0) > 0)) {
       // Busca o valor atualizado do contador
       const counter = await prisma.$runCommandRaw({
         find: "counters",
         filter: { _id: name },
-      });
+      }) as { cursor?: { firstBatch?: Array<{ sequence_value: number }> } };
 
-      if (counter.cursor?.firstBatch?.length > 0) {
-        return counter.cursor.firstBatch[0].sequence_value;
+      const counterDocument = counter.cursor?.firstBatch?.[0];
+      if (counterDocument) {
+        return counterDocument.sequence_value;
       } else {
         throw new Error(`Erro ao buscar o contador atualizado para ${name}`);
       }
@@ -63,7 +71,7 @@ async function getNextSequence(name: string): Promise<number> {
 }
 
 // Função para inserir um cliente com ID incremental
-export async function inserirCliente(cliente: Cliente): Promise<boolean> {
+export async function inserirCliente(cliente: ClienteInput): Promise<boolean> {
   try {
     // Obtém o próximo valor da sequência
     const nextId = await getNextSequence("clienteId");
@@ -87,7 +95,7 @@ export async function inserirCliente(cliente: Cliente): Promise<boolean> {
 }
 
 
-export async function editarCliente(cliente: Cliente): Promise<boolean> {
+export async function editarCliente(cliente: ClienteInput): Promise<boolean> {
 
   const clienteEditado = await prisma.cliente.update({
     where: {
@@ -100,6 +108,14 @@ export async function editarCliente(cliente: Cliente): Promise<boolean> {
   })
 
   return clienteEditado.id === cliente.id;
+}
+
+export async function login(email: string, senha: string): Promise<boolean> {
+  const cliente = await prisma.cliente.findUnique({
+    where: { email },
+  });
+
+  return cliente?.senha === senha;
 }
 
 

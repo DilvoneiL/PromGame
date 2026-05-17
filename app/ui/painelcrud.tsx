@@ -7,9 +7,9 @@ export default function PainelCRUD({
   editar,
   remover
 }: {
-  adicionar: Function,
-  editar: Function,
-  remover: Function
+  adicionar: () => void,
+  editar: () => void,
+  remover: () => void
 }) {
   const { data: session} = useSession(); // status pode ser "loading", "authenticated" ou "unauthenticated"
   const role = session?.user?.role;

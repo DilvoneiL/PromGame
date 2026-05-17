@@ -12,8 +12,8 @@ import Image from "next/image";
 
 export default function FormEdtOferta() {
   const router = useRouter();
-  const params = useParams();
-  const ofertaId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const params = useParams<{ id: string }>();
+  const ofertaId = params.id;
 
   const [mensagem, setMensagem] = useState<string>("");
   const [jogos, setJogos] = useState<{ id: string; nome: string }[]>([]);

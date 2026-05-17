@@ -9,7 +9,7 @@ interface Jogo {
   id: string;
   nome: string;
   imagemUrl: string;
-  ofertas?: { preco: number }[];
+  ofertas: { preco: number }[];
 }
 
 const Products = () => {

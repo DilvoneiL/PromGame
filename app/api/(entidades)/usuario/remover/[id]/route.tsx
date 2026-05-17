@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { removerUsuario } from '@/data/usuarioDAO'; // Função para remover o usuário
-import { auth } from "@/app/lib/auth/auth"; // Função para pegar a sessão
 import jwt from 'jsonwebtoken'; // Para verificar o token JWT
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     // Extrair o token JWT do cabeçalho Authorization
     const authorizationHeader = request.headers.get('Authorization');
     
@@ -28,7 +28,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     // Agora podemos acessar os dados do usuário do token decodificado
     const userIdLogged = decoded.id; // ID do usuário logado
     const userRole = decoded.role; // Papel do usuário (por exemplo, ADMIN)
-    const userIdToDelete = params.id; // ID do usuário a ser deletado
+    const userIdToDelete = id; // ID do usuário a ser deletado
 
     // Verifica se o usuário é um admin ou está tentando remover a si mesmo
     if (userIdLogged !== userIdToDelete && userRole !== 'ADMIN') {

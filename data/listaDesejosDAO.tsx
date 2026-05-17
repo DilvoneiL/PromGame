@@ -127,7 +127,7 @@ export async function gerarRelatorioJogosMaisDesejados() {
           ano: detalhes?.ano,
           publisher: detalhes?.publisher,
           imagemUrl: detalhes?.imagemUrl || "/upload.png",
-          categorias: detalhes?.categorias.map((c) => c.categoria.nome) || [],
+          categorias: detalhes?.categorias.map((c) => c.categoria?.nome).filter(Boolean) || [],
           ofertas: detalhes?.ofertas.map((oferta) => ({
             id: oferta.id,
             endereco: oferta.endereco,

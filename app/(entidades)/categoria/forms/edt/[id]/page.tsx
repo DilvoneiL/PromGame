@@ -6,23 +6,26 @@ import { editarCategoriaAction } from "@/app/(entidades)/categoria/action";
 import SubmitButton from "@/app/ui/submitbutton";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { useFormState } from "react-dom";
 
-export default function FormEdtCategoria({ params }: { params: { id: string } }) {
+export default function FormEdtCategoria() {
+  const params = useParams<{ id: string }>();
+  const id = params.id;
   const [state, formAction] = useFormState(editarCategoriaAction, { mensagem: "" });
-  console.log("ID recebido via params:", params.id);
+  console.log("ID recebido via params:", id);
 
   // Fetch data for the selected category
   const { data, error } = useSWR<Categoria>(
-    `http://localhost:3000/api/categoria/obter?id=${params.id}`,
+    `http://localhost:3000/api/categoria/obter?id=${id}`,
     (url: string) => fetch(url).then((res) => res.json())
   );
 
   if (error) {
     return (
       <div className={styles.formularioDiv}>
-        <h1>Erro ao buscar categoria com ID: {params.id}.</h1>
+        <h1>Erro ao buscar categoria com ID: {id}.</h1>
         <Link href="/categoria">
           <button type="button">Voltar</button>
         </Link>
